@@ -54,6 +54,24 @@ const ChatListPanel = ({ onSelectChat }: ChatListPanelProps) => {
     }
   };
 
+  const acceptChatRequest = async (chatId: string) => {
+    try {
+      const res = await api.patch("/api/v1/chats/acceptChat", {
+        chatRoomId: chatId,
+      });
+
+      const acceptedChat = res.data.chat;
+
+      setPendingChats((prev) => prev.filter((chat) => chat._id !== chatId));
+
+      setRegularChats((prev) => [...prev, acceptedChat]);
+
+      console.log("Request Accepted Successfully");
+    } catch (err: any) {
+      console.log(err.response?.data?.error || err.message);
+    }
+  };
+
   useEffect(() => {
     if (activeTab === "requests") {
       fetchPendingRequests();
@@ -61,8 +79,10 @@ const ChatListPanel = ({ onSelectChat }: ChatListPanelProps) => {
   }, [activeTab]);
 
   useEffect(() => {
-    myRegularChats();
-  }, []);
+    if (activeTab === "chats") {
+      myRegularChats();
+    }
+  }, [activeTab]);
 
   const filteredChats = activeTab === "chats" ? regularChats : pendingChats;
 
@@ -73,16 +93,7 @@ const ChatListPanel = ({ onSelectChat }: ChatListPanelProps) => {
     chatId: string,
   ) => {
     if (action === "accept") {
-      const acceptedChat = pendingChats.find((chat) => chat._id === chatId);
-      if (acceptedChat) {
-        setPendingChats((prev) => prev.filter((chat) => chat._id !== chatId));
-        setRegularChats((prev) => [
-          ...prev,
-          { ...acceptedChat, isRequest: false },
-        ]);
-      }
-    } else {
-      setPendingChats((prev) => prev.filter((chat) => chat._id !== chatId));
+      acceptChatRequest(chatId);
     }
   };
 
