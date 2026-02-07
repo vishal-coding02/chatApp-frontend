@@ -11,8 +11,8 @@ const ChatBox = ({ chat, onBack }: ChatBoxProps) => {
   return (
     <div className="h-full flex flex-col bg-white">
       <ChatHeader chat={chat} onBack={onBack} />
-      <MessagesArea />
-      <MessageInput />
+      <MessagesArea chat={chat}/>
+      <MessageInput chat={chat}/>
     </div>
   );
 };

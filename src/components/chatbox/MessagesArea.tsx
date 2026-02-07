@@ -1,6 +1,10 @@
 import { Check, CheckCheck } from "lucide-react";
 
-const MessagesArea = () => {
+interface MessagesArea {
+  chat: any;
+}
+
+const MessagesArea = ({ chat }: MessagesArea) => {
   const messages = [
     {
       id: 1,
