@@ -1,13 +1,31 @@
 import { useState } from "react";
 import { Send, Smile, Paperclip, Mic } from "lucide-react";
+import api from "../../api/axios";
 
-const MessageInput = () => {
+interface MessageInput {
+  chat: any;
+}
+const MessageInput = ({ chat }: MessageInput) => {
   const [message, setMessage] = useState("");
 
-  const handleSend = () => {
-    if (message.trim()) {
-      console.log("Sending message:", message);
+  const handleSend = async () => {
+    if (message == "") {
+      alert("please fill input filed");
+    }
+
+    try {
+      const res = await api.post("/api/v1/message/sendMessage", {
+        chatRoomId: chat._id,
+        text: message,
+      });
+
+      const data = res.data;
+
+      console.log(data.message, data.result);
+
       setMessage("");
+    } catch (err: any) {
+      console.log(err.response?.data?.error || err.message);
     }
   };
 
