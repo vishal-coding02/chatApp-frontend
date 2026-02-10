@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { Send, Smile, Paperclip, Mic } from "lucide-react";
 import api from "../../api/axios";
+import { socket } from "../../socket";
 
 interface MessageInput {
   chat: any;
 }
 const MessageInput = ({ chat }: MessageInput) => {
   const [message, setMessage] = useState("");
+
+  const myId = localStorage.getItem("userID");
 
   const handleSend = async () => {
     if (message == "") {
@@ -22,6 +25,12 @@ const MessageInput = ({ chat }: MessageInput) => {
       const data = res.data;
 
       console.log(data.message, data.result);
+
+      socket.emit("sendMessage", {
+        from: myId,
+        message,
+        room: chat._id,
+      });
 
       setMessage("");
     } catch (err: any) {

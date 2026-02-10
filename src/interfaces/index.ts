@@ -9,23 +9,23 @@ export interface User {
 }
 
 export interface Message {
-  id: string;
+  _id?: string;
+  text: string;
   senderId: string;
-  receiverId: string;
-  content: string;
-  timestamp: string;
-  isRead: boolean;
+  isMe?: boolean;
+  createdAt: string;
+  status?: string;
 }
 
 export interface Chat {
   id: string;
   userId: string;
 
-  name: string;       
-  isOnline: boolean;   
+  name: string;
+  isOnline: boolean;
 
   lastMessage: string;
 
-  unread: number;    
-  time: string;       
+  unread: number;
+  time: string;
 }
