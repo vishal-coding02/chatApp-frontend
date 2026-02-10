@@ -8,7 +8,7 @@ interface ChatRowProps {
     isRequest?: boolean;
     participants?: any[];
     createdBy?: string;
-    updatedAt?: string;
+    lastMessageAt?: string;
     status?: string;
   };
 
@@ -32,8 +32,8 @@ const ChatRow = ({ chat, onSelectChat, onRequestAction }: ChatRowProps) => {
 
   const chatAvatar = chatName.charAt(0).toUpperCase();
 
-  const chatTime = chat.updatedAt
-    ? new Date(chat.updatedAt).toLocaleTimeString([], {
+  const messageTime = chat.lastMessageAt
+    ? new Date(chat.lastMessageAt).toLocaleTimeString([], {
         hour: "2-digit",
         minute: "2-digit",
       })
@@ -114,7 +114,7 @@ const ChatRow = ({ chat, onSelectChat, onRequestAction }: ChatRowProps) => {
 
             <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
               <Clock className="h-3 w-3" />
-              {chatTime}
+              {messageTime}
             </p>
           </div>
         </div>
