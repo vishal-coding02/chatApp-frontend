@@ -57,7 +57,6 @@ const LeftSidebar = () => {
 
   return (
     <div className="h-full flex flex-col bg-linear-to-b from-white to-indigo-50/30 p-4 border-r border-gray-100">
-      {/* Header */}
       <div className="mb-6">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center">
@@ -95,7 +94,6 @@ const LeftSidebar = () => {
         />
       </div>
 
-      {/* Users List */}
       <div className="flex-1 overflow-y-auto">
         {loading && (
           <div className="flex justify-center py-4">

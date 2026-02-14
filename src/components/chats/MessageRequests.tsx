@@ -19,71 +19,7 @@ interface MessageRequest {
 }
 
 const MessageRequests = () => {
-  const [requests, setRequests] = useState<MessageRequest[]>([
-    {
-      id: 1,
-      name: "Vipul Tyagi",
-      username: "engineeringdigest.in",
-      message: "Requested DSA Program is below 🚀",
-      time: "2d",
-      unread: true,
-      avatar: "V",
-    },
-    {
-      id: 2,
-      name: "mycodeshala",
-      username: "mycodeshala",
-      message: "Check out our new course!",
-      time: "3d",
-      unread: true,
-      avatar: "M",
-    },
-    {
-      id: 3,
-      name: "Rithik Agarwal",
-      username: "rithik.dev",
-      message: "Hey, let's connect!",
-      time: "5d",
-      unread: false,
-      avatar: "R",
-    },
-    {
-      id: 4,
-      name: "Pratyush Pandey",
-      username: "pratyush.codes",
-      message: "Regarding the project discussion",
-      time: "6d",
-      unread: false,
-      avatar: "P",
-    },
-    {
-      id: 5,
-      name: "Shubhaam Tiwary",
-      username: "shubhaam.design",
-      message: "UI/UX collaboration?",
-      time: "1w",
-      unread: false,
-      avatar: "S",
-    },
-    {
-      id: 6,
-      name: "dev.nd.drive",
-      username: "dev.nd.drive",
-      message: "Sent a file for review",
-      time: "2w",
-      unread: false,
-      avatar: "D",
-    },
-    {
-      id: 7,
-      name: "code.abhiio7",
-      username: "code.abhiio7",
-      message: "",
-      time: "",
-      unread: false,
-      avatar: "A",
-    },
-  ]);
+  const [requests, setRequests] = useState<MessageRequest[]>([]);
 
   const [selectedRequest, setSelectedRequest] = useState<MessageRequest | null>(
     null,

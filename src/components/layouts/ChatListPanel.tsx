@@ -98,7 +98,7 @@ const ChatListPanel = ({ onSelectChat }: ChatListPanelProps) => {
   };
 
   return (
-    <div className="h-full flex flex-col bg-gradient-to-b from-white to-indigo-50/30">
+    <div className=" h-full flex flex-col bg-gradient-to-b from-white to-indigo-50/30">
       <ChatTopBar />
 
       {/* Tabs */}

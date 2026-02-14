@@ -41,11 +41,6 @@ const ChatTopBar = () => {
             </div>
           </div>
 
-          {/* Settings */}
-          <button className="w-10 h-10 rounded-full bg-gradient-to-r from-gray-50 to-gray-100 border border-gray-300 flex items-center justify-center hover:from-gray-100 hover:to-gray-200 transition-all duration-300">
-            <Settings className="h-5 w-5 text-gray-600" />
-          </button>
-
           {/* User Profile */}
           <div className="flex items-center gap-2">
             <div className="text-right">
