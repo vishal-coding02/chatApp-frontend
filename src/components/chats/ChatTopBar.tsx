@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { Bell, Settings, ChevronDown } from "lucide-react";
+import { Bell, ChevronDown } from "lucide-react";
 
 const ChatTopBar = () => {
   const userData = useSelector((state: any) => state.auth.userData);
