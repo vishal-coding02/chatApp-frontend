@@ -30,11 +30,9 @@ const Signup = () => {
   const [successMessage, setSuccessMessage] = useState<string>("");
 
   const handleCreateUser = async () => {
-    // Reset messages
     setErrorMessage("");
     setSuccessMessage("");
 
-    // Validation
     if (!user.fullname || !user.username || !user.email || !user.password) {
       setErrorMessage("Please fill in all required fields");
       return;
@@ -58,7 +56,6 @@ const Signup = () => {
       setSuccessMessage(res.data.message);
       console.log(res.data.message);
 
-      // Reset form
       setUser({
         fullname: "",
         username: "",
@@ -68,7 +65,6 @@ const Signup = () => {
       });
       setConfirmPassword("");
 
-      // Optional: Redirect to login after successful signup
       setTimeout(() => {
         navigate("/auth/login");
       }, 2000);

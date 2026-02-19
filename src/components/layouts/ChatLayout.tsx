@@ -3,11 +3,24 @@ import LeftSidebar from "../layouts/LeftSidebar";
 import ChatListPanel from "../layouts/ChatListPanel";
 import ChatBox from "../layouts/ChatBox";
 import { UserRoundPlus } from "lucide-react";
+import UserProfile from "../UserProfile";
 
 const ChatLayout = () => {
   const [selectedChat, setSelectedChat] = useState<any>(null);
   const [showChatBox, setShowChatBox] = useState<Boolean>(false);
   const [showSideBar, setShowSideBar] = useState<Boolean>(false);
+  const [selectedUserId, setSelectedUserId] = useState("");
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+
+  const openProfile = (id: string) => {
+    setSelectedUserId(id);
+    setIsProfileOpen(true);
+  };
+
+  const closeProfile = () => {
+    setIsProfileOpen(false);
+    setSelectedUserId("");
+  };
 
   const handleSelectChat = (chat: any) => {
     setSelectedChat(chat);
@@ -24,7 +37,7 @@ const ChatLayout = () => {
       <div
         className={`hidden md:flex w-[22%] h-full flex-col flex-shrink-0  border-r border-gray-100`}
       >
-        <LeftSidebar />
+        <LeftSidebar onOpenProfile={openProfile} />
       </div>
 
       <div
@@ -35,7 +48,7 @@ const ChatLayout = () => {
     md:hidden
   `}
       >
-        <LeftSidebar />
+        <LeftSidebar onOpenProfile={openProfile} />
       </div>
 
       {showSideBar && (
@@ -48,7 +61,10 @@ const ChatLayout = () => {
       <div
         className={`${selectedChat ? "hidden md:flex" : "flex"} w-full md:w-[38%]  border-r border-gray-100 flex  flex-col h-full`}
       >
-        <ChatListPanel onSelectChat={handleSelectChat} />
+        <ChatListPanel
+          onSelectChat={handleSelectChat}
+          onOpenProfile={openProfile}
+        />
       </div>
 
       <div
@@ -96,6 +112,17 @@ const ChatLayout = () => {
             <p className="text-sm text-gray-500">
               Click on any conversation to open it here
             </p>
+          </div>
+        </div>
+      )}
+
+      {isProfileOpen && (
+        <div
+          className="fixed inset-0 bg-black/40 z-50 flex justify-center items-center"
+          onClick={closeProfile}
+        >
+          <div onClick={(e) => e.stopPropagation()}>
+            <UserProfile userId={selectedUserId} onClose={closeProfile} />
           </div>
         </div>
       )}

@@ -1,13 +1,34 @@
 import { useSelector } from "react-redux";
 import { Bell, User, Image, Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import api from "../../api/axios";
+import type { UserData } from "../../interfaces";
 
-const ChatTopBar = () => {
+const ChatTopBar = ({ onOpenProfile }: any) => {
   const userData = useSelector((state: any) => state.auth.userData);
+  const [user, setUser] = useState<UserData>({});
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isImagePreviewOpen, setIsImagePreviewOpen] = useState(false);
-  console.log(userData);
+
+  const myId = localStorage.getItem("userID");
+
+  const handleFetchUserProfile = async () => {
+    try {
+      const res = await api.get(`/api/v1/users/profile/${myId}`);
+      const data = res.data;
+      setUser(data.user);
+      console.log(data.message);
+    } catch (err) {
+      console.log("Fetch users error", err);
+    }
+  };
+
+  useEffect(() => {
+    if (myId) {
+      handleFetchUserProfile();
+    }
+  }, []);
 
   return (
     <>
@@ -46,15 +67,17 @@ const ChatTopBar = () => {
                 onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
               >
                 <div className="w-10 h-10 rounded-full bg-gradient-to-r from-indigo-100 to-purple-100 border-2 border-indigo-200 flex items-center justify-center overflow-hidden">
-                  {userData?.profileImage ? (
+                  {userData?.avatar ? (
                     <img
-                      src={userData.profileImage}
+                      src={userData.avatar}
                       alt="profile"
                       className="w-full h-full object-cover"
                     />
                   ) : (
                     <span className="text-sm font-semibold text-indigo-600">
-                      {userData?.userName?.[0]?.toUpperCase() || "U"}
+                      {user?.userName?.[0]?.toUpperCase() ||
+                        userData?.userName?.[0]?.toUpperCase() ||
+                        "U"}
                     </span>
                   )}
                 </div>
@@ -65,6 +88,7 @@ const ChatTopBar = () => {
                   <button
                     onClick={() => {
                       setIsProfileMenuOpen(false);
+                      onOpenProfile(myId);
                     }}
                     className="w-full px-4 py-3 text-left flex items-center gap-3 hover:bg-gray-50 transition-colors duration-200"
                   >
@@ -119,15 +143,17 @@ const ChatTopBar = () => {
                     onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
                   >
                     <div className="w-10 h-10 rounded-full bg-gradient-to-r from-indigo-100 to-purple-100 border-2 border-indigo-200 flex items-center justify-center overflow-hidden">
-                      {userData?.profileImage ? (
+                      {userData?.avatar ? (
                         <img
-                          src={userData.profileImage}
+                          src={userData.avatar || user.avatar}
                           alt="profile"
                           className="w-full h-full object-cover"
                         />
                       ) : (
                         <span className="text-sm font-semibold text-indigo-600">
-                          {userData?.userName?.[0]?.toUpperCase() || "U"}
+                          {user?.userName?.[0]?.toUpperCase() ||
+                            userData?.userName?.[0]?.toUpperCase() ||
+                            "U"}
                         </span>
                       )}
                     </div>
@@ -139,6 +165,7 @@ const ChatTopBar = () => {
                         onClick={() => {
                           setIsProfileMenuOpen(false);
                           setIsMobileMenuOpen(false);
+                          onOpenProfile(user._id);
                         }}
                         className="w-full px-4 py-3 text-left flex items-center gap-3 hover:bg-gray-50 transition-colors duration-200"
                       >
@@ -191,7 +218,9 @@ const ChatTopBar = () => {
               ) : (
                 <div className="w-full h-full bg-gradient-to-r from-indigo-100 to-purple-100 flex items-center justify-center">
                   <span className="text-8xl font-bold text-indigo-600">
-                    {userData?.userName?.[0]?.toUpperCase() || "U"}
+                    {user?.userName?.[0]?.toUpperCase() ||
+                      userData?.userName?.[0]?.toUpperCase() ||
+                      "U"}
                   </span>
                 </div>
               )}

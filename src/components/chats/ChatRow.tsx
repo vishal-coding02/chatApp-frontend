@@ -11,6 +11,7 @@ interface ChatRowProps {
     lastMessageAt?: string;
     status?: string;
   };
+  onOpenProfile: (userId: string) => void;
 
   onSelectChat?: (chat: any) => void;
   onRequestAction?: (
@@ -19,7 +20,12 @@ interface ChatRowProps {
   ) => void;
 }
 
-const ChatRow = ({ chat, onSelectChat, onRequestAction }: ChatRowProps) => {
+const ChatRow = ({
+  chat,
+  onSelectChat,
+  onRequestAction,
+  onOpenProfile,
+}: ChatRowProps) => {
   const [showRequestActions, setShowRequestActions] = useState(false);
 
   const myId = localStorage.getItem("userID");
@@ -81,7 +87,15 @@ const ChatRow = ({ chat, onSelectChat, onRequestAction }: ChatRowProps) => {
               {isRequest ? (
                 <UserPlus className="h-5 w-5 text-yellow-600" />
               ) : (
-                <span className="text-sm font-semibold text-indigo-600">
+                <span
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (otherUser?._id) {
+                      onOpenProfile(otherUser._id);
+                    }
+                  }}
+                  className="text-sm font-semibold text-indigo-600"
+                >
                   {chatAvatar}
                 </span>
               )}
