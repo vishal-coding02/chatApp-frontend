@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import api from "../../api/axios";
 
-const LeftSidebar = () => {
+const LeftSidebar = ({ onOpenProfile }: any) => {
   const logout = useLogout();
   const token = useSelector((state: any) => state.auth.jwtToken);
   const currentUserId = localStorage.getItem("userID");
@@ -113,7 +113,11 @@ const LeftSidebar = () => {
 
         <div className="space-y-3">
           {filteredUsers.map((user) => (
-            <UserCard key={user._id} user={user} />
+            <UserCard
+              key={user._id}
+              user={user}
+              onOpenProfile={onOpenProfile}
+            />
           ))}
         </div>
 

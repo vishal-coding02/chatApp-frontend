@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Send, Smile, Paperclip, Mic } from "lucide-react";
 import api from "../../api/axios";
 import { socket } from "../../socket";
+import { encryptMessage } from "../../utils/encryption";
 
 interface MessageInput {
   chat: any;
@@ -17,21 +18,22 @@ const MessageInput = ({ chat }: MessageInput) => {
     }
 
     try {
+      const encryptedMsg = encryptMessage(message);
       const res = await api.post("/api/v1/message/sendMessage", {
         chatRoomId: chat._id,
-        text: message,
+        text: encryptedMsg,
       });
 
       const data = res.data;
-
-      console.log(data.message, data.result);
+      console.log(data.message);
 
       socket.emit("sendMessage", {
         from: myId,
-        message,
+        message: encryptedMsg,
         room: chat._id,
       });
 
+      console.log("message", encryptedMsg);
       setMessage("");
     } catch (err: any) {
       console.log(err.response?.data?.error || err.message);

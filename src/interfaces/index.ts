@@ -1,11 +1,11 @@
-export interface User {
-  id: string;
-  name: string;
-  username: string;
-  email: string;
+export interface UserData {
+  _id?: string;
+  userFullName?: string;
+  userName?: string;
+  userEmail?: string;
   avatar?: string;
-  isOnline: boolean;
-  lastSeen?: string;
+  createdAt?: string;
+  profilePic? : string
 }
 
 export interface Message {

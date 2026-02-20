@@ -5,9 +5,10 @@ import api from "../../api/axios";
 
 interface ChatListPanelProps {
   onSelectChat: (chat: any) => void;
+  onOpenProfile: any;
 }
 
-const ChatListPanel = ({ onSelectChat }: ChatListPanelProps) => {
+const ChatListPanel = ({ onSelectChat, onOpenProfile }: ChatListPanelProps) => {
   const [activeTab, setActiveTab] = useState<"chats" | "requests">("chats");
   const [regularChats, setRegularChats] = useState<any[]>([]);
   const [pendingChats, setPendingChats] = useState<any[]>([]);
@@ -99,7 +100,7 @@ const ChatListPanel = ({ onSelectChat }: ChatListPanelProps) => {
 
   return (
     <div className=" h-full flex flex-col bg-gradient-to-b from-white to-indigo-50/30">
-      <ChatTopBar />
+      <ChatTopBar onOpenProfile={onOpenProfile} />
 
       {/* Tabs */}
       <div className="flex border-b border-gray-200 bg-white">
@@ -201,6 +202,7 @@ const ChatListPanel = ({ onSelectChat }: ChatListPanelProps) => {
                     onRequestAction={
                       activeTab === "requests" ? handleRequestAction : undefined
                     }
+                    onOpenProfile={onOpenProfile}
                   />
                 ))}
               </div>

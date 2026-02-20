@@ -3,6 +3,7 @@ import api from "../../api/axios";
 import { useEffect, useState } from "react";
 import type { Message } from "../../interfaces";
 import { socket } from "../../socket";
+import { decryptMessage } from "../../utils/encryption";
 
 interface MessagesAreaProps {
   chat: any;
@@ -16,7 +17,12 @@ const MessagesArea = ({ chat }: MessagesAreaProps) => {
   const handleGetMessages = async () => {
     try {
       const res = await api.get(`/api/v1/message/${chat._id}`);
-      setMessages(res.data.messages);
+      const decryptedMessages = res.data.messages.map((msg: any) => ({
+        ...msg,
+        text: decryptMessage(msg.text),
+      }));
+
+      setMessages(decryptedMessages);
     } catch (err: any) {
       console.log(err.response?.data?.error || err.message);
     }
@@ -37,12 +43,13 @@ const MessagesArea = ({ chat }: MessagesAreaProps) => {
     });
 
     socket.on("message", (newMsg) => {
+      const decrypted = decryptMessage(newMsg.message);
       setMessages((prev) => [
         ...prev,
         {
           _id: newMsg._id,
           senderId: newMsg.from,
-          text: newMsg.message,
+          text: decrypted,
           createdAt: new Date().toISOString(),
         },
       ]);
