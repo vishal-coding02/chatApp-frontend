@@ -42,7 +42,7 @@ const UserProfile = ({ userId, onClose }: UserProfileProps) => {
       <div className="fixed inset-0 z-50 md:hidden" onClick={onClose}>
         <div className="absolute inset-0 bg-black/40" />
         <div
-          className="absolute bottom-0 ml-6 mr-6 left-0 right-0 bg-white rounded-t-3xl shadow-2xl animate-slide-up"
+          className="absolute bottom-0 ml-10 mr-10 left-0 right-0 bg-white rounded-t-3xl shadow-2xl animate-slide-up"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex justify-center pt-3 pb-1">
@@ -58,9 +58,9 @@ const UserProfile = ({ userId, onClose }: UserProfileProps) => {
           <div className="p-6 pt-2">
             <div className="flex flex-col items-center">
               <div className="w-24 h-24 rounded-full overflow-hidden border-3 border-indigo-200 shadow-lg mb-3">
-                {user?.avatar ? (
+                {user?.profilePic ? (
                   <img
-                    src={user.avatar}
+                    src={user.profilePic}
                     alt="profile"
                     className="w-full h-full object-cover"
                   />
@@ -117,9 +117,9 @@ const UserProfile = ({ userId, onClose }: UserProfileProps) => {
           <div className="p-6">
             <div className="flex flex-col items-center">
               <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-indigo-200 shadow-md mb-3">
-                {user?.avatar ? (
+                {user?.profilePic ? (
                   <img
-                    src={user.avatar}
+                    src={user.profilePic}
                     alt="profile"
                     className="w-full h-full object-cover"
                   />

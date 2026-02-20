@@ -71,7 +71,11 @@ const ChatLayout = () => {
         className={`w-full md:w-[40%] h-full transition-all duration-300 ${showChatBox ? "opacity-100" : "opacity-0 hidden"}`}
       >
         {selectedChat && (
-          <ChatBox chat={selectedChat} onBack={handleBackToList} />
+          <ChatBox
+            chat={selectedChat}
+            onBack={handleBackToList}
+            onOpenProfile={openProfile}
+          />
         )}
       </div>
 

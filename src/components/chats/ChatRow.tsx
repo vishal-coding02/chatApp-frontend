@@ -1,5 +1,6 @@
 import { Trash2, Clock, UserPlus, Check, X, User, Lock } from "lucide-react";
 import { useState } from "react";
+import { decryptMessage } from "../../utils/encryption";
 
 interface ChatRowProps {
   chat: {
@@ -10,6 +11,7 @@ interface ChatRowProps {
     createdBy?: string;
     lastMessageAt?: string;
     status?: string;
+    avatar?: string; // Add avatar field
   };
   onOpenProfile: (userId: string) => void;
 
@@ -37,6 +39,10 @@ const ChatRow = ({
   const chatName = otherUser?.userFullName || "Unknown User";
 
   const chatAvatar = chatName.charAt(0).toUpperCase();
+
+  const decryptedLastMessage = chat.lastMessage
+    ? decryptMessage(chat.lastMessage)
+    : "";
 
   const messageTime = chat.lastMessageAt
     ? new Date(chat.lastMessageAt).toLocaleTimeString([], {
@@ -78,7 +84,7 @@ const ChatRow = ({
         <div className="flex items-center gap-3">
           <div className="relative">
             <div
-              className={`w-12 h-12 rounded-full flex items-center justify-center ${
+              className={`w-12 h-12 rounded-full flex items-center justify-center overflow-hidden ${
                 isRequest
                   ? "bg-gradient-to-r from-yellow-100 to-orange-100 border-2 border-yellow-300"
                   : "bg-gradient-to-r from-indigo-100 to-purple-100 border-2 border-indigo-200"
@@ -86,6 +92,18 @@ const ChatRow = ({
             >
               {isRequest ? (
                 <UserPlus className="h-5 w-5 text-yellow-600" />
+              ) : otherUser?.profilePic ? (
+                <img
+                  src={otherUser.profilePic}
+                  alt={chatName}
+                  className="w-full h-full object-cover cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (otherUser?._id) {
+                      onOpenProfile(otherUser._id);
+                    }
+                  }}
+                />
               ) : (
                 <span
                   onClick={(e) => {
@@ -94,7 +112,7 @@ const ChatRow = ({
                       onOpenProfile(otherUser._id);
                     }
                   }}
-                  className="text-sm font-semibold text-indigo-600"
+                  className="text-sm font-semibold text-indigo-600 cursor-pointer"
                 >
                   {chatAvatar}
                 </span>
@@ -123,7 +141,7 @@ const ChatRow = ({
             <p className="text-sm text-gray-600">
               {isRequest
                 ? `Sent a message request`
-                : chat.lastMessage || "Start a conversation..."}
+                : decryptedLastMessage || "Start a conversation..."}
             </p>
 
             <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
@@ -200,7 +218,7 @@ const ChatRow = ({
 
             <div className="bg-yellow-50 border rounded-lg p-3">
               <p className="text-sm text-gray-700 mb-2">
-                {chat.lastMessage || "No message yet"}
+                {decryptedLastMessage || "No message yet"}
               </p>
               <p className="text-xs text-gray-500">
                 They won't know you've seen it until you accept

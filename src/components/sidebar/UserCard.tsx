@@ -26,12 +26,21 @@ const UserCard = ({ user, onOpenProfile }: any) => {
   return (
     <div className="bg-white border border-gray-200 rounded-xl p-3 flex items-center justify-between hover:shadow-sm transition-all duration-300 hover:border-indigo-300">
       <div className="flex items-center gap-3">
-        <div className="w-12 h-12 rounded-full bg-gradient-to-r from-indigo-100 to-purple-100 border-2 border-indigo-200 flex items-center justify-center">
-          <User
-            onClick={() => onOpenProfile(user._id)}
-            className="h-5 w-5 text-indigo-600 cursor-pointer"
-          />
+        <div 
+          className="w-12 h-12 rounded-full bg-gradient-to-r from-indigo-100 to-purple-100 border-2 border-indigo-200 flex items-center justify-center overflow-hidden cursor-pointer"
+          onClick={() => onOpenProfile(user._id)}
+        >
+          {user?.profilePic ? (
+            <img
+              src={user.profilePic}
+              alt={user.userName || user.username}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <User className="h-5 w-5 text-indigo-600" />
+          )}
         </div>
+        
         <div>
           <p className="font-medium text-gray-800">
             {user.userName || user.username}

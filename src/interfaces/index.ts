@@ -5,6 +5,7 @@ export interface UserData {
   userEmail?: string;
   avatar?: string;
   createdAt?: string;
+  profilePic? : string
 }
 
 export interface Message {

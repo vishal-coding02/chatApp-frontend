@@ -18,6 +18,7 @@ const ChatTopBar = ({ onOpenProfile }: any) => {
       const res = await api.get(`/api/v1/users/profile/${myId}`);
       const data = res.data;
       setUser(data.user);
+      console.log(data.user.profilePic);
       console.log(data.message);
     } catch (err) {
       console.log("Fetch users error", err);
@@ -67,9 +68,9 @@ const ChatTopBar = ({ onOpenProfile }: any) => {
                 onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
               >
                 <div className="w-10 h-10 rounded-full bg-gradient-to-r from-indigo-100 to-purple-100 border-2 border-indigo-200 flex items-center justify-center overflow-hidden">
-                  {userData?.avatar ? (
+                  {userData?.profilePic || user?.profilePic ? (
                     <img
-                      src={userData.avatar}
+                      src={userData.profilePic || user.profilePic}
                       alt="profile"
                       className="w-full h-full object-cover"
                     />
@@ -143,9 +144,9 @@ const ChatTopBar = ({ onOpenProfile }: any) => {
                     onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
                   >
                     <div className="w-10 h-10 rounded-full bg-gradient-to-r from-indigo-100 to-purple-100 border-2 border-indigo-200 flex items-center justify-center overflow-hidden">
-                      {userData?.avatar ? (
+                      {userData?.profilePic || user?.profilePic ? (
                         <img
-                          src={userData.avatar || user.avatar}
+                          src={userData.profilePic || user.profilePic}
                           alt="profile"
                           className="w-full h-full object-cover"
                         />
@@ -209,9 +210,9 @@ const ChatTopBar = ({ onOpenProfile }: any) => {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="w-64 h-64 sm:w-80 sm:h-80 lg:w-96 lg:h-96 rounded-full overflow-hidden border-4 border-white shadow-2xl">
-              {userData?.profileImage ? (
+              {userData?.profilePic || user.profilePic ? (
                 <img
-                  src={userData.profileImage}
+                  src={userData.profilePic || user.profilePic}
                   alt={userData?.userName || "Profile"}
                   className="w-full h-full object-cover"
                 />
