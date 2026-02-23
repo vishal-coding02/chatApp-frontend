@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Send, Smile, Paperclip, Mic } from "lucide-react";
-import api from "../../api/axios";
-import { socket } from "../../socket";
-import { encryptMessage } from "../../utils/encryption";
+import { Send } from "lucide-react";
+import api from "../../../api/axios";
+import { socket } from "../../../socket";
+import { encryptMessage } from "../../../utils/encryption";
 
 interface MessageInput {
   chat: any;

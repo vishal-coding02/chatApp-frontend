@@ -1,5 +1,5 @@
-import { socket } from "../../socket";
-import api from "../../api/axios";
+import { socket } from "../../../socket";
+import api from "../../../api/axios";
 import { User, MessageSquarePlus, MessageSquare } from "lucide-react";
 
 const UserCard = ({ user, onOpenProfile, existingChats }: any) => {
