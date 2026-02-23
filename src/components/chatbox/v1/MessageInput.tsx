@@ -50,14 +50,6 @@ const MessageInput = ({ chat }: MessageInput) => {
   return (
     <div className="border-t border-gray-200 bg-white p-4">
       <div className="flex items-center gap-2">
-        <button className="p-2.5 rounded-xl bg-gradient-to-r from-gray-50 to-gray-100 border border-gray-300 hover:from-gray-100 hover:to-gray-200 transition-all duration-300">
-          <Paperclip className="h-5 w-5 text-gray-600" />
-        </button>
-
-        <button className="p-2.5 rounded-xl bg-gradient-to-r from-gray-50 to-gray-100 border border-gray-300 hover:from-gray-100 hover:to-gray-200 transition-all duration-300">
-          <Smile className="h-5 w-5 text-gray-600" />
-        </button>
-
         <div className="flex-1 relative">
           <textarea
             value={message}
@@ -67,12 +59,6 @@ const MessageInput = ({ chat }: MessageInput) => {
             className="w-full min-h-[44px] max-h-32 px-4 py-2.5 bg-white border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 text-sm resize-none align-middle"
             rows={1}
           />
-
-          {!message.trim() && (
-            <button className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-gray-500 hover:text-indigo-600">
-              <Mic className="h-5 w-5" />
-            </button>
-          )}
         </div>
 
         <button

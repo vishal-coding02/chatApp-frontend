@@ -1,9 +1,9 @@
 import { useState } from "react";
-import LeftSidebar from "../layouts/LeftSidebar";
-import ChatListPanel from "../layouts/ChatListPanel";
-import ChatBox from "../layouts/ChatBox";
+import LeftSidebar from "../../layouts/v1/LeftSidebar";
+import ChatListPanel from "../../layouts/v1/ChatListPanel";
+import ChatBox from "../../layouts/v1/ChatBox";
 import { UserRoundPlus } from "lucide-react";
-import UserProfile from "../UserProfile";
+import UserProfile from "../../users/v1/UserProfile";
 
 const ChatLayout = () => {
   const [selectedChat, setSelectedChat] = useState<any>(null);

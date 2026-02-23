@@ -1,8 +1,8 @@
 // UserProfile.tsx
 import { useState, useEffect } from "react";
 import { X, Calendar, User as Mail } from "lucide-react";
-import type { UserData } from "../interfaces";
-import api from "../api/axios";
+import type { UserData } from "../../../interfaces";
+import api from "../../../api/axios";
 
 type UserProfileProps = {
   userId: string;

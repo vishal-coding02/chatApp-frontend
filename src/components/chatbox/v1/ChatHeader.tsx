@@ -1,4 +1,4 @@
-import { ArrowLeft, Phone, Video, MoreVertical } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 interface ChatHeaderProps {
   chat: any;
@@ -12,6 +12,7 @@ const ChatHeader = ({ chat, onBack, onOpenProfile }: ChatHeaderProps) => {
 
   const chatName = otherUser?.userFullName || "Unknown User";
 
+  const userName = otherUser?.userName;
   const chatAvatar = chatName.charAt(0).toUpperCase();
 
   return (
@@ -41,32 +42,13 @@ const ChatHeader = ({ chat, onBack, onOpenProfile }: ChatHeaderProps) => {
           )}
         </div>
 
-        {/* Name - Click to open profile */}
         <div
           className="cursor-pointer"
           onClick={() => otherUser?._id && onOpenProfile(otherUser._id)}
         >
           <p className="font-semibold text-gray-800">{chatName}</p>
-          <p className="text-xs text-green-600 flex items-center gap-1">
-            <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-            Online
-          </p>
+          <p className="text-gray-400 text-[14px]">{userName}</p>
         </div>
-      </div>
-
-      {/* Right icons */}
-      <div className="flex items-center gap-2">
-        <button className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors">
-          <Phone className="h-5 w-5 text-gray-600" />
-        </button>
-
-        <button className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors">
-          <Video className="h-5 w-5 text-gray-600" />
-        </button>
-
-        <button className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors">
-          <MoreVertical className="h-5 w-5 text-gray-600" />
-        </button>
       </div>
     </div>
   );
