@@ -1,17 +1,15 @@
 import Navbar from "../../components/layouts/v1/Navbar";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 const Home = () => {
-  const navigate = useNavigate();
-  const user = useSelector((state: any) => state.auth.userData);
+  const { isAuthReady, isAuthenticated } = useSelector(
+    (state: any) => state.auth,
+  );
 
-  useEffect(() => {
-    if (user) {
-      navigate("/chatscreen");
-    }
-  }, [user]);
+  if (!isAuthReady) return null;
+
+  if (isAuthenticated) return <Navigate to="/chatscreen" replace />;
 
   return (
     <div className="min-h-screen bg-linear-to-br from-indigo-50 to-white flex flex-col">
