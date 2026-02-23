@@ -35,11 +35,11 @@ const UserCard = ({ user, onOpenProfile, existingChats }: any) => {
   };
 
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-3 flex items-center justify-between hover:shadow-lg transition-all duration-300 hover:border-indigo-400 hover:bg-gradient-to-r hover:from-indigo-50/50 hover:to-purple-50/50 group">
+    <div className="bg-white border border-gray-200 rounded-xl p-3 flex items-center justify-between hover:shadow-lg transition-all duration-300 hover:border-indigo-400 hover:bg-linear-to-r hover:from-indigo-50/50 hover:to-purple-50/50 group">
       <div className="flex items-center gap-3 flex-1 min-w-0">
         {/* Profile Image */}
         <div
-          className="w-12 h-12 rounded-full bg-gradient-to-r from-indigo-100 to-purple-100 border-2 border-indigo-200 flex items-center justify-center overflow-hidden cursor-pointer flex-shrink-0 hover:border-indigo-500 hover:scale-105 transition-all duration-300 shadow-sm group-hover:shadow-md"
+          className="w-12 h-12 rounded-full bg-linear-to-r from-indigo-100 to-purple-100 border-2 border-indigo-200 flex items-center justify-center overflow-hidden cursor-pointer shrink-0 hover:border-indigo-500 hover:scale-105 transition-all duration-300 shadow-sm group-hover:shadow-md"
           onClick={() => onOpenProfile(user._id)}
         >
           {user?.profilePic ? (
@@ -67,8 +67,8 @@ const UserCard = ({ user, onOpenProfile, existingChats }: any) => {
       {/* Action Button */}
       <button
         onClick={handleCreateChatRoom}
-        className={`px-3 py-2 text-white text-xs sm:text-sm font-medium rounded-xl transition-all duration-300 flex items-center justify-center gap-1.5 shadow-sm hover:shadow-md flex-shrink-0 ml-2 min-w-[85px] sm:min-w-[95px]
-          bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 hover:scale-105
+        className={`px-3 py-2 text-white text-xs sm:text-sm font-medium rounded-xl transition-all duration-300 flex items-center justify-center gap-1.5 shadow-sm hover:shadow-md shrink-0 ml-2 min-w-21.25 sm:min-23.75
+          bg-linear-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 hover:scale-105
           ${alreadyChatExists ? "opacity-90" : ""}`}
       >
         {alreadyChatExists ? (

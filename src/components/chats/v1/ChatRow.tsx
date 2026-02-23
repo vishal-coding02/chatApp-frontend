@@ -74,7 +74,7 @@ const ChatRow = ({
           : "border-gray-200 hover:border-indigo-300 hover:shadow-sm cursor-pointer"
       } ${
         showRequestActions
-          ? "bg-gradient-to-r from-yellow-50/50 to-orange-50/50"
+          ? "bg-linear-to-r from-yellow-50/50 to-orange-50/50"
           : ""
       }`}
       onClick={handleClick}
@@ -86,8 +86,8 @@ const ChatRow = ({
             <div
               className={`w-12 h-12 rounded-full flex items-center justify-center overflow-hidden ${
                 isRequest
-                  ? "bg-gradient-to-r from-yellow-100 to-orange-100 border-2 border-yellow-300"
-                  : "bg-gradient-to-r from-indigo-100 to-purple-100 border-2 border-indigo-200"
+                  ? "bg-linear-to-r from-yellow-100 to-orange-100 border-2 border-yellow-300"
+                  : "bg-linear-to-r from-indigo-100 to-purple-100 border-2 border-indigo-200"
               }`}
             >
               {isRequest ? (
@@ -121,7 +121,7 @@ const ChatRow = ({
 
             {/* Indicators */}
             {isRequest && (
-              <div className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs rounded-full flex items-center justify-center font-semibold">
+              <div className="absolute -top-1 -right-1 w-5 h-5 bg-linear-to-r from-red-500 to-pink-500 text-white text-xs rounded-full flex items-center justify-center font-semibold">
                 !
               </div>
             )}
@@ -132,7 +132,7 @@ const ChatRow = ({
               <p className="font-semibold text-gray-800">{chatName}</p>
 
               {isRequest && (
-                <span className="text-xs px-2 py-1 bg-gradient-to-r from-yellow-100 to-orange-100 text-yellow-700 rounded-full">
+                <span className="text-xs px-2 py-1 bg-linear-to-r from-yellow-100 to-orange-100 text-yellow-700 rounded-full">
                   Request
                 </span>
               )}
@@ -162,7 +162,7 @@ const ChatRow = ({
                       e.stopPropagation();
                       handleAction("accept");
                     }}
-                    className="w-10 h-10 rounded-full bg-gradient-to-r from-green-500 to-emerald-500 text-white flex items-center justify-center"
+                    className="w-10 h-10 rounded-full bg-linear-to-r from-green-500 to-emerald-500 text-white flex items-center justify-center"
                   >
                     <Check className="h-5 w-5" />
                   </button>
@@ -172,7 +172,7 @@ const ChatRow = ({
                       e.stopPropagation();
                       handleAction("delete");
                     }}
-                    className="w-10 h-10 rounded-full bg-gradient-to-r from-red-500 to-pink-500 text-white flex items-center justify-center"
+                    className="w-10 h-10 rounded-full bg-linear-to-r from-red-500 to-pink-500 text-white flex items-center justify-center"
                   >
                     <X className="h-5 w-5" />
                   </button>
@@ -182,7 +182,7 @@ const ChatRow = ({
                       e.stopPropagation();
                       handleAction("block");
                     }}
-                    className="w-10 h-10 rounded-full bg-gradient-to-r from-gray-500 to-gray-600 text-white flex items-center justify-center"
+                    className="w-10 h-10 rounded-full bg-linear-to-r from-gray-500 to-gray-600 text-white flex items-center justify-center"
                   >
                     <Lock className="h-4 w-4" />
                   </button>

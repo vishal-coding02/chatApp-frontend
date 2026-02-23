@@ -99,7 +99,7 @@ const ChatListPanel = ({ onSelectChat, onOpenProfile }: ChatListPanelProps) => {
   };
 
   return (
-    <div className=" h-full flex flex-col bg-gradient-to-b from-white to-indigo-50/30">
+    <div className=" h-full flex flex-col bg-linear-to-b from-white to-indigo-50/30">
       <ChatTopBar onOpenProfile={onOpenProfile} />
 
       {/* Tabs */}
@@ -130,7 +130,7 @@ const ChatListPanel = ({ onSelectChat, onOpenProfile }: ChatListPanelProps) => {
           <span className="relative">
             Requests
             {requestCount > 0 && (
-              <span className="absolute -top-3 -right-3 w-5 h-5 bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
+              <span className="absolute -top-3 -right-3 w-5 h-5 bg-linear-to-r from-red-500 to-pink-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
                 {requestCount}
               </span>
             )}
@@ -168,7 +168,7 @@ const ChatListPanel = ({ onSelectChat, onOpenProfile }: ChatListPanelProps) => {
 
           {/* Info Message for Requests */}
           {activeTab === "requests" && pendingChats.length > 0 && (
-            <div className="mb-4 p-3 bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl">
+            <div className="mb-4 p-3 bg-linear-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl">
               <p className="text-sm text-gray-700">
                 Open a request to see more info. They won't know you've seen it
                 until you accept.
@@ -210,7 +210,7 @@ const ChatListPanel = ({ onSelectChat, onOpenProfile }: ChatListPanelProps) => {
               {/* Empty State */}
               {filteredChats.length === 0 && (
                 <div className="text-center py-10">
-                  <div className="w-20 h-20 mx-auto bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mb-4">
+                  <div className="w-20 h-20 mx-auto bg-linear-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mb-4">
                     {activeTab === "chats" ? (
                       <svg
                         className="h-8 w-8 text-gray-400"

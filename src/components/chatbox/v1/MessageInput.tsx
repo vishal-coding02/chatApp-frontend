@@ -56,7 +56,7 @@ const MessageInput = ({ chat }: MessageInput) => {
             onChange={(e) => setMessage(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Type your message here..."
-            className="w-full min-h-[44px] max-h-32 px-4 py-2.5 bg-white border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 text-sm resize-none align-middle"
+            className="w-full min-h-11 max-h-32 px-4 py-2.5 bg-white border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 text-sm resize-none align-middle"
             rows={1}
           />
         </div>
@@ -66,8 +66,8 @@ const MessageInput = ({ chat }: MessageInput) => {
           disabled={!message.trim()}
           className={`p-2.5 rounded-xl flex items-center justify-center transition-all duration-300 ${
             message.trim()
-              ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 shadow-md hover:shadow-lg"
-              : "bg-gradient-to-r from-gray-100 to-gray-200 text-gray-400 cursor-not-allowed"
+              ? "bg-linear-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 shadow-md hover:shadow-lg"
+              : "bg-linear-to-r from-gray-100 to-gray-200 text-gray-400 cursor-not-allowed"
           }`}
         >
           <Send className="h-5 w-5" />

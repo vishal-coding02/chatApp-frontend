@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { socket } from "../../socket";
-import Navbar from "../../components/layouts/Navbar";
+import Navbar from "../../components/layouts/v1/Navbar";
 import api from "../../api/axios";
 import { useDispatch } from "react-redux";
 import { jwtTokenAction, loginAction } from "../../redux/reducer/AuthReducer";
@@ -65,7 +65,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
+    <div className="min-h-screen bg-linear-to-br from-indigo-50 via-white to-purple-50">
       {/* Navbar */}
       <Navbar />
 
@@ -75,7 +75,7 @@ const Login = () => {
         <div className="w-full max-w-md">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl mb-4 shadow-lg">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-linear-to-r from-indigo-500 to-purple-600 rounded-2xl mb-4 shadow-lg">
               <svg
                 className="w-8 h-8 text-white"
                 fill="currentColor"
@@ -175,7 +175,7 @@ const Login = () => {
             <button
               onClick={handleLoginUser}
               disabled={isLoading}
-              className="w-full py-3.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center"
+              className="w-full py-3.5 bg-linear-to-r from-indigo-600 to-purple-600 text-white font-medium rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center"
             >
               {isLoading ? (
                 <>
@@ -208,11 +208,11 @@ const Login = () => {
 
             {/* Divider */}
             <div className="my-8 flex items-center">
-              <div className="flex-grow border-t border-gray-300"></div>
-              <span className="flex-shrink mx-4 text-gray-500 text-sm">
+              <div className="grow border-t border-gray-300"></div>
+              <span className="shrink mx-4 text-gray-500 text-sm">
                 Or continue with
               </span>
-              <div className="flex-grow border-t border-gray-300"></div>
+              <div className="grow border-t border-gray-300"></div>
             </div>
 
             {/* Social Login Options */}

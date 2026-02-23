@@ -10,7 +10,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           <Link to="/" className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center shadow-md">
+            <div className="w-10 h-10 rounded-xl bg-linear-to-r from-indigo-500 to-purple-600 flex items-center justify-center shadow-md">
               <svg
                 className="w-6 h-6 text-white"
                 fill="currentColor"
@@ -24,7 +24,7 @@ const Navbar = () => {
                 ></path>
               </svg>
             </div>
-            <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 text-transparent bg-clip-text">
+            <span className="text-2xl font-bold bg-linear-to-r from-indigo-600 to-purple-600 text-transparent bg-clip-text">
               ChatHub
             </span>
           </Link>
@@ -35,7 +35,7 @@ const Navbar = () => {
               className="text-gray-700 hover:text-indigo-600 font-medium transition-colors duration-300 relative group"
             >
               Home
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 group-hover:w-full transition-all duration-300"></span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-linear-to-r from-indigo-500 to-purple-500 group-hover:w-full transition-all duration-300"></span>
             </Link>
 
             <div className="flex items-center space-x-4">
@@ -48,7 +48,7 @@ const Navbar = () => {
 
               <Link
                 to="/auth/signup"
-                className="px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg"
+                className="px-6 py-2.5 bg-linear-to-r from-indigo-600 to-purple-600 text-white font-medium rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg"
               >
                 Sign Up
               </Link>
@@ -85,7 +85,7 @@ const Navbar = () => {
 
                 <Link
                   to="/auth/signup"
-                  className="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md text-center"
+                  className="px-6 py-3 bg-linear-to-r from-indigo-600 to-purple-600 text-white font-medium rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md text-center"
                   onClick={() => setIsOpen(false)}
                 >
                   Sign Up

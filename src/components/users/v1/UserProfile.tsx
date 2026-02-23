@@ -65,7 +65,7 @@ const UserProfile = ({ userId, onClose }: UserProfileProps) => {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <div className="w-full h-full bg-gradient-to-r from-indigo-100 to-purple-100 flex items-center justify-center">
+                  <div className="w-full h-full bg-linear-to-r from-indigo-100 to-purple-100 flex items-center justify-center">
                     <span className="text-3xl font-bold text-indigo-600">
                       {user?.userName?.[0]?.toUpperCase() || "U"}
                     </span>
@@ -124,7 +124,7 @@ const UserProfile = ({ userId, onClose }: UserProfileProps) => {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <div className="w-full h-full bg-gradient-to-r from-indigo-100 to-purple-100 flex items-center justify-center">
+                  <div className="w-full h-full bg-linear-to-r from-indigo-100 to-purple-100 flex items-center justify-center">
                     <span className="text-2xl font-bold text-indigo-600">
                       {user?.userName?.[0]?.toUpperCase() || "U"}
                     </span>
