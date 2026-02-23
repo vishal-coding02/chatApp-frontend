@@ -1,9 +1,8 @@
-// import { Check, CheckCheck } from "lucide-react";
-import api from "../../api/axios";
+import api from "../../../api/axios";
 import { useEffect, useState } from "react";
-import type { Message } from "../../interfaces";
-import { socket } from "../../socket";
-import { decryptMessage } from "../../utils/encryption";
+import type { Message } from "../../../interfaces";
+import { socket } from "../../../socket";
+import { decryptMessage } from "../../../utils/encryption";
 
 interface MessagesAreaProps {
   chat: any;

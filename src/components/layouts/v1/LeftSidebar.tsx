@@ -1,20 +1,20 @@
-import UserCard from "../sidebar/UserCard";
+import UserCard from "../../sidebar/v1/UserCard";
 import { LogOut, Search } from "lucide-react";
-import { useLogout } from "../sidebar/LogoutButton";
+import { useLogout } from "../../sidebar/v1/LogoutButton";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import api from "../../api/axios";
+import api from "../../../api/axios";
 
 const LeftSidebar = ({ onOpenProfile }: any) => {
   const logout = useLogout();
   const token = useSelector((state: any) => state.auth.jwtToken);
   const currentUserId = localStorage.getItem("userID");
-
+  const [myChats, setMyChats] = useState([]);
   const [users, setUsers] = useState<any[]>([]);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
-
+  const id = localStorage.getItem("userID");
   const debounceRef = useRef<any>(null);
 
   const filteredUsers = users.filter((user) => user._id !== currentUserId);
@@ -34,6 +34,23 @@ const LeftSidebar = ({ onOpenProfile }: any) => {
       setLoading(false);
     }
   };
+
+  const handleMyChats = async () => {
+    try {
+      const res = await api.get(`/api/v1/chats/${id}`);
+      const chats = res.data.chats;
+
+      const activeChats = chats.filter((chat: any) => chat.status === "active");
+
+      setMyChats(activeChats);
+    } catch (err: any) {
+      console.log(err.response?.data?.error || err.message);
+    }
+  };
+
+  useEffect(() => {
+    handleMyChats();
+  }, []);
 
   useEffect(() => {
     if (!token) return;
@@ -117,6 +134,7 @@ const LeftSidebar = ({ onOpenProfile }: any) => {
               key={user._id}
               user={user}
               onOpenProfile={onOpenProfile}
+              existingChats={myChats}
             />
           ))}
         </div>

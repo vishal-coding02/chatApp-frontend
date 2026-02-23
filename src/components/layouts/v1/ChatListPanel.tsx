@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import ChatTopBar from "../chats/ChatTopBar";
-import ChatRow from "../chats/ChatRow";
-import api from "../../api/axios";
+import ChatTopBar from "../../chats/v1/ChatTopBar";
+import ChatRow from "../../chats/v1/ChatRow";
+import api from "../../../api/axios";
 
 interface ChatListPanelProps {
   onSelectChat: (chat: any) => void;
