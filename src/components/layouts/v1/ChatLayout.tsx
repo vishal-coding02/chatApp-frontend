@@ -33,9 +33,9 @@ const ChatLayout = () => {
   };
 
   return (
-    <div className="h-screen w-full flex bg-gradient-to-br from-indigo-50 via-white to-purple-50 relative">
+    <div className="h-screen w-full flex bg-linear-to-br from-indigo-50 via-white to-purple-50 relative">
       <div
-        className={`hidden md:flex w-[22%] h-full flex-col flex-shrink-0  border-r border-gray-100`}
+        className={`hidden md:flex w-[22%] h-full flex-col shrink-0  border-r border-gray-100`}
       >
         <LeftSidebar onOpenProfile={openProfile} />
       </div>
@@ -81,7 +81,7 @@ const ChatLayout = () => {
 
       <div
         className={`${selectedChat && "hidden"} fixed bottom-8 right-5 z-50 md:hidden 
-  bg-gradient-to-r from-indigo-500 to-purple-600 
+  bg-linear-to-r from-indigo-500 to-purple-600 
   p-4 rounded-full shadow-lg cursor-pointer`}
       >
         <UserRoundPlus
@@ -93,7 +93,7 @@ const ChatLayout = () => {
       {!showChatBox && (
         <div className="hidden md:flex w-[40%] h-full items-center justify-center bg-white/50 border-l border-gray-100">
           <div className="text-center p-8">
-            <div className="w-24 h-24 mx-auto bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mb-6">
+            <div className="w-24 h-24 mx-auto bg-linear-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mb-6">
               <svg
                 className="h-12 w-12 text-gray-400"
                 fill="currentColor"

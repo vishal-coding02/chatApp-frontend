@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../../api/axios";
-import Navbar from "../../components/layouts/Navbar";
+import Navbar from "../../components/layouts/v1/Navbar"
 import {
   User,
   Mail,
@@ -178,7 +178,7 @@ const Signup = () => {
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <div className="w-full h-full bg-gradient-to-r from-indigo-100 to-purple-100 flex items-center justify-center">
+                      <div className="w-full h-full bg-linear-to-r from-indigo-100 to-purple-100 flex items-center justify-center">
                         <User className="h-8 w-8 text-indigo-400" />
                       </div>
                     )}

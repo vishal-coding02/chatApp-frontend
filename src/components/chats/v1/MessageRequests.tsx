@@ -51,12 +51,12 @@ const MessageRequests = () => {
   };
 
   return (
-    <div className="h-full flex flex-col bg-gradient-to-b from-white to-indigo-50/30">
+    <div className="h-full flex flex-col bg-linear-to-b from-white to-indigo-50/30">
       {/* Header */}
       <div className="border-b border-gray-200 bg-white px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-lg bg-linear-to-r from-indigo-500 to-purple-600 flex items-center justify-center">
               <MessageCircle className="h-5 w-5 text-white" />
             </div>
             <div>
@@ -75,7 +75,7 @@ const MessageRequests = () => {
             className={`px-4 py-2 text-sm font-medium rounded-xl transition-all duration-300 ${
               requests.length === 0
                 ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                : "bg-gradient-to-r from-red-50 to-red-100 text-red-600 hover:from-red-100 hover:to-red-200 border border-red-200"
+                : "bg-linear-to-r from-red-50 to-red-100 text-red-600 hover:from-red-100 hover:to-red-200 border border-red-200"
             }`}
           >
             Delete All
@@ -108,7 +108,7 @@ const MessageRequests = () => {
                 onClick={() => setSelectedRequest(request)}
                 className={`p-4 rounded-xl cursor-pointer transition-all duration-300 mb-2 ${
                   selectedRequest?.id === request.id
-                    ? "bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200"
+                    ? "bg-linear-to-r from-indigo-50 to-purple-50 border border-indigo-200"
                     : "bg-white border border-gray-200 hover:bg-gray-50"
                 }`}
               >
@@ -117,8 +117,8 @@ const MessageRequests = () => {
                     <div
                       className={`w-12 h-12 rounded-full flex items-center justify-center ${
                         request.unread
-                          ? "bg-gradient-to-r from-indigo-100 to-purple-100 border-2 border-indigo-300"
-                          : "bg-gradient-to-r from-gray-100 to-gray-200 border-2 border-gray-300"
+                          ? "bg-linear-to-r from-indigo-100 to-purple-100 border-2 border-indigo-300"
+                          : "bg-linear-to-r from-gray-100 to-gray-200 border-2 border-gray-300"
                       }`}
                     >
                       <span
@@ -128,7 +128,7 @@ const MessageRequests = () => {
                       </span>
                     </div>
                     {request.unread && (
-                      <div className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs rounded-full flex items-center justify-center font-semibold">
+                      <div className="absolute -top-1 -right-1 w-5 h-5 bg-linear-to-r from-indigo-600 to-purple-600 text-white text-xs rounded-full flex items-center justify-center font-semibold">
                         !
                       </div>
                     )}
@@ -175,7 +175,7 @@ const MessageRequests = () => {
               {/* Header */}
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-r from-indigo-100 to-purple-100 border-2 border-indigo-300 flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-full bg-linear-to-r from-indigo-100 to-purple-100 border-2 border-indigo-300 flex items-center justify-center">
                     <span className="text-xl font-bold text-indigo-600">
                       {selectedRequest.avatar}
                     </span>
@@ -195,7 +195,7 @@ const MessageRequests = () => {
               </div>
 
               {/* View Profile Button */}
-              <button className="w-full mb-6 py-3 bg-gradient-to-r from-gray-50 to-gray-100 border border-gray-300 text-gray-700 font-medium rounded-xl hover:from-gray-100 hover:to-gray-200 transition-all duration-300 flex items-center justify-center gap-2">
+              <button className="w-full mb-6 py-3 bg-linear-to-r from-gray-50 to-gray-100 border border-gray-300 text-gray-700 font-medium rounded-xl hover:from-gray-100 hover:to-gray-200 transition-all duration-300 flex items-center justify-center gap-2">
                 <User className="h-4 w-4" />
                 View profile
               </button>
@@ -203,7 +203,7 @@ const MessageRequests = () => {
               {/* Message Details */}
               <div className="space-y-4 mb-8">
                 <div className="text-center">
-                  <span className="inline-block px-3 py-1 bg-gradient-to-r from-gray-100 to-gray-200 text-gray-600 text-xs font-medium rounded-full">
+                  <span className="inline-block px-3 py-1 bg-linear-to-r from-gray-100 to-gray-200 text-gray-600 text-xs font-medium rounded-full">
                     Fri 20:31
                   </span>
                 </div>
@@ -223,12 +223,12 @@ const MessageRequests = () => {
                   </a>
                 </div>
 
-                <div className="bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200 rounded-xl p-4">
+                <div className="bg-linear-to-r from-indigo-50 to-purple-50 border border-indigo-200 rounded-xl p-4">
                   <p className="text-sm text-gray-800 font-medium mb-2">Hey</p>
                   <p className="text-sm text-gray-700 mb-3">
                     Requested DSA Program is below
                   </p>
-                  <button className="w-full py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-sm font-medium rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-300">
+                  <button className="w-full py-2.5 bg-linear-to-r from-indigo-600 to-purple-600 text-white text-sm font-medium rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-300">
                     Click here
                   </button>
                 </div>
@@ -246,19 +246,19 @@ const MessageRequests = () => {
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => handleBlockRequest(selectedRequest.id)}
-                    className="flex-1 py-3 bg-gradient-to-r from-red-50 to-red-100 text-red-600 font-medium rounded-xl hover:from-red-100 hover:to-red-200 transition-all duration-300 border border-red-200"
+                    className="flex-1 py-3 bg-linear-to-r from-red-50 to-red-100 text-red-600 font-medium rounded-xl hover:from-red-100 hover:to-red-200 transition-all duration-300 border border-red-200"
                   >
                     Block
                   </button>
                   <button
                     onClick={() => handleDeleteRequest(selectedRequest.id)}
-                    className="flex-1 py-3 bg-gradient-to-r from-gray-50 to-gray-100 text-gray-700 font-medium rounded-xl hover:from-gray-100 hover:to-gray-200 transition-all duration-300 border border-gray-300"
+                    className="flex-1 py-3 bg-linear-to-r from-gray-50 to-gray-100 text-gray-700 font-medium rounded-xl hover:from-gray-100 hover:to-gray-200 transition-all duration-300 border border-gray-300"
                   >
                     Delete
                   </button>
                   <button
                     onClick={() => handleAcceptRequest(selectedRequest.id)}
-                    className="flex-1 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg"
+                    className="flex-1 py-3 bg-linear-to-r from-indigo-600 to-purple-600 text-white font-medium rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg"
                   >
                     Accept
                   </button>
@@ -267,7 +267,7 @@ const MessageRequests = () => {
             </div>
           ) : (
             <div className="h-full flex flex-col items-center justify-center">
-              <div className="w-24 h-24 mx-auto bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mb-6">
+              <div className="w-24 h-24 mx-auto bg-linear-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mb-6">
                 <MessageCircle className="h-12 w-12 text-gray-400" />
               </div>
               <h3 className="text-xl font-semibold text-gray-800 mb-2">

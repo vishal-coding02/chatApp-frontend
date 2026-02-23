@@ -36,7 +36,7 @@ const ChatTopBar = ({ onOpenProfile }: any) => {
       <div className="border-b border-gray-200 bg-white px-4 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-linear-to-r from-indigo-500 to-purple-600 flex items-center justify-center">
               <svg
                 className="h-5 w-5 text-white"
                 fill="currentColor"
@@ -50,14 +50,14 @@ const ChatTopBar = ({ onOpenProfile }: any) => {
                 ></path>
               </svg>
             </div>
-            <h1 className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 text-transparent bg-clip-text">
+            <h1 className="text-xl font-bold bg-linear-to-r from-indigo-600 to-purple-600 text-transparent bg-clip-text">
               ChatHub
             </h1>
           </div>
 
           <div className="hidden md:flex items-center gap-3">
             <div className="relative">
-              <button className="w-10 h-10 rounded-full bg-gradient-to-r from-gray-50 to-gray-100 border border-gray-300 flex items-center justify-center hover:from-gray-100 hover:to-gray-200 transition-all duration-300">
+              <button className="w-10 h-10 rounded-full bg-linear-to-r from-gray-50 to-gray-100 border border-gray-300 flex items-center justify-center hover:from-gray-100 hover:to-gray-200 transition-all duration-300">
                 <Bell className="h-5 w-5 text-gray-600" />
               </button>
             </div>
@@ -67,7 +67,7 @@ const ChatTopBar = ({ onOpenProfile }: any) => {
                 className="cursor-pointer"
                 onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
               >
-                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-indigo-100 to-purple-100 border-2 border-indigo-200 flex items-center justify-center overflow-hidden">
+                <div className="w-10 h-10 rounded-full bg-linear-to-r from-indigo-100 to-purple-100 border-2 border-indigo-200 flex items-center justify-center overflow-hidden">
                   {userData?.profilePic || user?.profilePic ? (
                     <img
                       src={userData.profilePic || user.profilePic}
@@ -131,7 +131,7 @@ const ChatTopBar = ({ onOpenProfile }: any) => {
             <div className="flex flex-col space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-gray-700 font-medium">Notifications</span>
-                <button className="w-10 h-10 rounded-full bg-gradient-to-r from-gray-50 to-gray-100 border border-gray-300 flex items-center justify-center">
+                <button className="w-10 h-10 rounded-full bg-linear-to-r from-gray-50 to-gray-100 border border-gray-300 flex items-center justify-center">
                   <Bell className="h-5 w-5 text-gray-600" />
                 </button>
               </div>
@@ -143,7 +143,7 @@ const ChatTopBar = ({ onOpenProfile }: any) => {
                     className="cursor-pointer"
                     onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
                   >
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-indigo-100 to-purple-100 border-2 border-indigo-200 flex items-center justify-center overflow-hidden">
+                    <div className="w-10 h-10 rounded-full bg-linear-to-r from-indigo-100 to-purple-100 border-2 border-indigo-200 flex items-center justify-center overflow-hidden">
                       {userData?.profilePic || user?.profilePic ? (
                         <img
                           src={userData.profilePic || user.profilePic}
@@ -217,7 +217,7 @@ const ChatTopBar = ({ onOpenProfile }: any) => {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <div className="w-full h-full bg-gradient-to-r from-indigo-100 to-purple-100 flex items-center justify-center">
+                <div className="w-full h-full bg-linear-to-r from-indigo-100 to-purple-100 flex items-center justify-center">
                   <span className="text-8xl font-bold text-indigo-600">
                     {user?.userName?.[0]?.toUpperCase() ||
                       userData?.userName?.[0]?.toUpperCase() ||

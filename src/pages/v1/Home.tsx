@@ -1,8 +1,8 @@
-import Navbar from "../../components/layouts/Navbar";
+import Navbar from "../../components/layouts/v1/Navbar";
 
 const Home = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-white flex flex-col">
+    <div className="min-h-screen bg-linear-to-br from-indigo-50 to-white flex flex-col">
       {/* Navbar with Login/Signup links */}
       <Navbar />
 
@@ -14,7 +14,7 @@ const Home = () => {
           <div className="text-center mb-16">
             {/* Logo with gradient effect */}
             <div className="flex justify-center mb-6">
-              <div className="w-24 h-24 bg-gradient-to-r from-indigo-500 to-purple-600 mx-auto rounded-2xl flex items-center justify-center shadow-lg">
+              <div className="w-24 h-24 bg-linear-to-r from-indigo-500 to-purple-600 mx-auto rounded-2xl flex items-center justify-center shadow-lg">
                 <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                   <path fillRule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clipRule="evenodd"></path>
                 </svg>
@@ -23,7 +23,7 @@ const Home = () => {
             
             {/* Welcome Text */}
             <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-              Welcome to <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">ChatHub</span>
+              Welcome to <span className="text-transparent bg-clip-text bg-linear-to-r from-indigo-600 to-purple-600">ChatHub</span>
             </h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
               Connect, share, and chat with friends in a seamless experience
@@ -31,7 +31,7 @@ const Home = () => {
             
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
-              <button className="px-8 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1">
+              <button className="px-8 py-3 bg-linear-to-r from-indigo-600 to-purple-600 text-white font-medium rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1">
                 Start Chatting
               </button>
               <button className="px-8 py-3 bg-white text-gray-800 font-medium rounded-xl border border-gray-200 hover:border-indigo-300 hover:bg-gray-50 transition-all duration-300 shadow-sm">
@@ -75,21 +75,21 @@ const Home = () => {
 
           {/* Image Placeholders with improved styling */}
           <div className="mt-8 flex flex-col md:flex-row justify-center items-center gap-8 md:gap-12">
-            <div className="relative w-64 h-64 md:w-72 md:h-72 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-2xl shadow-lg overflow-hidden">
+            <div className="relative w-64 h-64 md:w-72 md:h-72 bg-linear-to-br from-indigo-100 to-purple-100 rounded-2xl shadow-lg overflow-hidden">
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-48 h-48 bg-gradient-to-r from-indigo-400 to-purple-500 rounded-full opacity-20"></div>
+                <div className="w-48 h-48 bg-linear-to-r from-indigo-400 to-purple-500 rounded-full opacity-20"></div>
               </div>
               <div className="absolute inset-0 flex items-center justify-center">
                 <svg className="w-32 h-32 text-indigo-600 opacity-70" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                   <path fillRule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clipRule="evenodd"></path>
                 </svg>
               </div>
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-indigo-600/30 to-transparent h-16"></div>
+              <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-indigo-600/30 to-transparent h-16"></div>
             </div>
             
-            <div className="relative w-64 h-64 md:w-72 md:h-72 bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl shadow-lg overflow-hidden">
+            <div className="relative w-64 h-64 md:w-72 md:h-72 bg-linear-to-br from-purple-100 to-pink-100 rounded-2xl shadow-lg overflow-hidden">
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-48 h-48 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full opacity-20"></div>
+                <div className="w-48 h-48 bg-linear-to-r from-purple-400 to-pink-500 rounded-full opacity-20"></div>
               </div>
               <div className="absolute inset-0 flex items-center justify-center">
                 <svg className="w-32 h-32 text-purple-600 opacity-70" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -97,14 +97,14 @@ const Home = () => {
                   <path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z"></path>
                 </svg>
               </div>
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-purple-600/30 to-transparent h-16"></div>
+              <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-purple-600/30 to-transparent h-16"></div>
             </div>
           </div>
           
           {/* Bottom CTA */}
           <div className="mt-16 text-center">
             <p className="text-gray-600 mb-6">Join thousands of users already connected</p>
-            <button className="px-8 py-3 bg-gradient-to-r from-gray-800 to-gray-900 text-white font-medium rounded-xl hover:from-gray-900 hover:to-black transition-all duration-300 shadow-md hover:shadow-lg">
+            <button className="px-8 py-3 bg-linear-to-r from-gray-800 to-gray-900 text-white font-medium rounded-xl hover:from-gray-900 hover:to-black transition-all duration-300 shadow-md hover:shadow-lg">
               Get Started For Free
             </button>
           </div>

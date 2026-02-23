@@ -76,7 +76,7 @@ const LeftSidebar = ({ onOpenProfile }: any) => {
     <div className="h-full flex flex-col bg-linear-to-b from-white to-indigo-50/30 p-4 border-r border-gray-100">
       <div className="mb-6">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-linear-to-r from-indigo-500 to-purple-600 flex items-center justify-center">
             <svg
               className="h-5 w-5 text-white"
               fill="currentColor"
@@ -90,7 +90,7 @@ const LeftSidebar = ({ onOpenProfile }: any) => {
               ></path>
             </svg>
           </div>
-          <h1 className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 text-transparent bg-clip-text">
+          <h1 className="text-xl font-bold bg-linear-to-r from-indigo-600 to-purple-600 text-transparent bg-clip-text">
             ChatHub
           </h1>
         </div>

@@ -60,7 +60,7 @@ const MessagesArea = ({ chat }: MessagesAreaProps) => {
   }, [chat]);
 
   return (
-    <div className="flex-1 p-4 space-y-4 overflow-y-auto bg-gradient-to-b from-white to-indigo-50/30">
+    <div className="flex-1 p-4 space-y-4 overflow-y-auto bg-linear-to-b from-white to-indigo-50/30">
       <div className="space-y-3">
         {messages.map((message) => {
           const isMe = message.senderId === myId;
@@ -73,11 +73,11 @@ const MessagesArea = ({ chat }: MessagesAreaProps) => {
               <div
                 className={`max-w-[70%] rounded-2xl p-3 text-sm relative ${
                   isMe
-                    ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-tr-none"
+                    ? "bg-linear-to-r from-indigo-600 to-purple-600 text-white rounded-tr-none"
                     : "bg-white border border-gray-200 text-gray-800 rounded-tl-none"
                 }`}
               >
-                <p className="whitespace-pre-wrap break-words">
+                <p className="whitespace-pre-wrap wrap-break-word">
                   {message.text}
                 </p>
 
