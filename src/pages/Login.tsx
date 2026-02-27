@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { socket } from "../../socket";
-import Navbar from "../../components/layouts/v1/Navbar";
-import api from "../../api/axios";
+import { socket } from "../socket";
+import Navbar from "../components/layouts/Navbar";
+import api from "../api/axios";
 import { useDispatch } from "react-redux";
-import { jwtTokenAction, loginAction } from "../../redux/reducer/AuthReducer";
+import { jwtTokenAction, loginAction } from "../redux/reducer/AuthReducer";
 import { useNavigate, Link } from "react-router-dom";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 
@@ -33,7 +33,7 @@ const Login = () => {
     setErrorMessage("");
 
     try {
-      const res = await api.post("/api/v1/auth/login", loginData);
+      const res = await api.post("/api/auth/login", loginData);
 
       const data = res.data;
       dispatch(jwtTokenAction(data.accessToken));

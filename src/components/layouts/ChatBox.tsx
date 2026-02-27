@@ -1,6 +1,6 @@
-import ChatHeader from "../../chatbox/v1/ChatHeader";
-import MessagesArea from "../../chatbox/v1/MessagesArea";
-import MessageInput from "../../chatbox/v1/MessageInput";
+import ChatHeader from "../chatbox/ChatHeader";
+import MessagesArea from "../chatbox/MessagesArea";
+import MessageInput from "../chatbox/MessageInput";
 
 interface ChatBoxProps {
   chat: any;

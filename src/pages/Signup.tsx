@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import api from "../../api/axios";
-import Navbar from "../../components/layouts/v1/Navbar"
+import api from "../api/axios";
+import Navbar from "../components/layouts/Navbar";
 import {
   User,
   Mail,
@@ -89,7 +89,7 @@ const Signup = () => {
     setIsLoading(true);
 
     try {
-      const res = await api.post("/api/v1/auth/signUp", user);
+      const res = await api.post("/api/auth/signUp", user);
 
       setSuccessMessage(res.data.message);
       console.log(res.data.message);

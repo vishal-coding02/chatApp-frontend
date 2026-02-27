@@ -1,8 +1,8 @@
-import api from "../../../api/axios";
+import api from "../../api/axios";
 import { useEffect, useState } from "react";
-import type { Message } from "../../../interfaces";
-import { socket } from "../../../socket";
-import { decryptMessage } from "../../../utils/encryption";
+import type { Message } from "../../interfaces";
+import { socket } from "../../socket";
+import { decryptMessage } from "../../utils/encryption";
 
 interface MessagesAreaProps {
   chat: any;
@@ -15,7 +15,7 @@ const MessagesArea = ({ chat }: MessagesAreaProps) => {
 
   const handleGetMessages = async () => {
     try {
-      const res = await api.get(`/api/v1/message/${chat._id}`);
+      const res = await api.get(`/api/message/${chat._id}`);
       const decryptedMessages = res.data.messages.map((msg: any) => ({
         ...msg,
         text: decryptMessage(msg.text),

@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
-import api from "../../../api/axios";
-import { logoutAction } from "../../../redux/reducer/AuthReducer";
+import api from "../../api/axios";
+import { logoutAction } from "../../redux/reducer/AuthReducer";
 
 export const useLogout = () => {
   const dispatch = useDispatch();
@@ -10,7 +10,7 @@ export const useLogout = () => {
   const handleLogout = async () => {
     try {
       const res = await api.post(
-        "/api/v1/auth/logout",
+        "/api/auth/logout",
         {},
         { withCredentials: true },
       );

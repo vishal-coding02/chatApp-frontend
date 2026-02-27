@@ -1,4 +1,4 @@
-import Navbar from "../../components/layouts/v1/Navbar";
+import Navbar from "../components/layouts/Navbar";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 

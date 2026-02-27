@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import ChatTopBar from "../../chats/v1/ChatTopBar";
-import ChatRow from "../../chats/v1/ChatRow";
-import api from "../../../api/axios";
+import ChatTopBar from "../chats/ChatTopBar";
+import ChatRow from "../chats/ChatRow";
+import api from "../../api/axios";
 
 interface ChatListPanelProps {
   onSelectChat: (chat: any) => void;
@@ -22,7 +22,7 @@ const ChatListPanel = ({ onSelectChat, onOpenProfile }: ChatListPanelProps) => {
     try {
       setLoading({ chats: true, requests: true });
 
-      const res = await api.get(`/api/v1/chats/${id}`);
+      const res = await api.get(`/api/chats/${id}`);
       const chats = res.data.chats;
 
       const activeChats = chats.filter((chat: any) => chat.status === "active");
@@ -44,7 +44,7 @@ const ChatListPanel = ({ onSelectChat, onOpenProfile }: ChatListPanelProps) => {
     try {
       setLoading((prev) => ({ ...prev, requests: true }));
 
-      const res = await api.get("/api/v1/chats/requests");
+      const res = await api.get("/api/chats/requests");
 
       setPendingChats(res.data.requests);
 
@@ -57,7 +57,7 @@ const ChatListPanel = ({ onSelectChat, onOpenProfile }: ChatListPanelProps) => {
 
   const acceptChatRequest = async (chatId: string) => {
     try {
-      const res = await api.patch("/api/v1/chats/acceptChat", {
+      const res = await api.patch("/api/chats/acceptChat", {
         chatRoomId: chatId,
       });
 

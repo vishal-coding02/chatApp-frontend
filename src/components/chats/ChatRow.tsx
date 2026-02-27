@@ -1,6 +1,6 @@
 import { Trash2, Clock, UserPlus, Check, X, User, Lock } from "lucide-react";
 import { useState } from "react";
-import { decryptMessage } from "../../../utils/encryption";
+import { decryptMessage } from "../../utils/encryption";
 
 interface ChatRowProps {
   chat: {

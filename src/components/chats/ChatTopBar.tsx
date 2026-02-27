@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux";
 import { Bell, User, Image, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import api from "../../../api/axios";
-import type { UserData } from "../../../interfaces";
+import api from "../../api/axios";
+import type { UserData } from "../../interfaces";
 
 const ChatTopBar = ({ onOpenProfile }: any) => {
   const userData = useSelector((state: any) => state.auth.userData);
@@ -15,7 +15,7 @@ const ChatTopBar = ({ onOpenProfile }: any) => {
 
   const handleFetchUserProfile = async () => {
     try {
-      const res = await api.get(`/api/v1/users/profile/${myId}`);
+      const res = await api.get(`/api/users/profile/${myId}`);
       const data = res.data;
       setUser(data.user);
       console.log(data.user.profilePic);

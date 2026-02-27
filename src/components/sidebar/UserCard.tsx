@@ -1,5 +1,5 @@
-import { socket } from "../../../socket";
-import api from "../../../api/axios";
+import { socket } from "../../socket";
+import api from "../../api/axios";
 import { User, MessageSquarePlus, MessageSquare } from "lucide-react";
 
 const UserCard = ({ user, onOpenProfile, existingChats }: any) => {
@@ -18,7 +18,7 @@ const UserCard = ({ user, onOpenProfile, existingChats }: any) => {
   const handleCreateChatRoom = async () => {
     if (alreadyChatExists) return;
     try {
-      const res = await api.post("/api/v1/chats", {
+      const res = await api.post("/api/chats", {
         participant1ID: myID,
         participant2ID: user._id,
       });

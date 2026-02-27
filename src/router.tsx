@@ -1,8 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
-import Home from "./pages/v1/Home";
-import Signup from "./pages/v1/Signup";
-import Login from "./pages/v1/Login";
-import ChatLayout from "./components/layouts/v1/ChatLayout";
+import Home from "./pages/Home";
+import Signup from "./pages/Signup";
+import Login from "./pages/Login";
+import ChatLayout from "./components/layouts/ChatLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 const router = createBrowserRouter([

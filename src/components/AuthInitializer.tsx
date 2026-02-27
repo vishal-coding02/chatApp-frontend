@@ -3,13 +3,14 @@ import { useDispatch } from "react-redux";
 import api from "../api/axios";
 import { jwtTokenAction } from "../redux/reducer/AuthReducer";
 import { socket } from "../socket";
+
 const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     const restoreSession = async () => {
       try {
         const res = await api.post(
-          "/api/v1/refreshToken",
+          "/api/refreshToken",
           {},
           { withCredentials: true },
         );

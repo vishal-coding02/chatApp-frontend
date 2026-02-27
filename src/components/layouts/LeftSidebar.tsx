@@ -1,9 +1,9 @@
-import UserCard from "../../sidebar/v1/UserCard";
+import UserCard from "../sidebar/UserCard";
 import { LogOut, Search } from "lucide-react";
-import { useLogout } from "../../sidebar/v1/LogoutButton";
+import { useLogout } from "../sidebar/LogoutButton";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import api from "../../../api/axios";
+import api from "../../api/axios";
 
 const LeftSidebar = ({ onOpenProfile }: any) => {
   const logout = useLogout();
@@ -24,7 +24,7 @@ const LeftSidebar = ({ onOpenProfile }: any) => {
       setLoading(true);
 
       const res = await api.get(
-        `/api/v1/users?name=${searchValue}&page=${pageNumber}`,
+        `/api/users?name=${searchValue}&page=${pageNumber}`,
       );
 
       setUsers(res.data.users);
@@ -37,7 +37,7 @@ const LeftSidebar = ({ onOpenProfile }: any) => {
 
   const handleMyChats = async () => {
     try {
-      const res = await api.get(`/api/v1/chats/${id}`);
+      const res = await api.get(`/api/chats/${id}`);
       const chats = res.data.chats;
 
       const activeChats = chats.filter((chat: any) => chat.status === "active");

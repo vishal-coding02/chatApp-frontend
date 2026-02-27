@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Send } from "lucide-react";
-import api from "../../../api/axios";
-import { socket } from "../../../socket";
-import { encryptMessage } from "../../../utils/encryption";
+import api from "../../api/axios";
+import { socket } from "../../socket";
+import { encryptMessage } from "../../utils/encryption";
 
 interface MessageInput {
   chat: any;
@@ -19,7 +19,7 @@ const MessageInput = ({ chat }: MessageInput) => {
 
     try {
       const encryptedMsg = encryptMessage(message);
-      const res = await api.post("/api/v1/message/sendMessage", {
+      const res = await api.post("/api/message/sendMessage", {
         chatRoomId: chat._id,
         text: encryptedMsg,
       });
