@@ -1,9 +1,14 @@
 import { socket } from "../../socket";
 import api from "../../api/axios";
 import { User, MessageSquarePlus, MessageSquare } from "lucide-react";
+import { useSelector } from "react-redux";
 
 const UserCard = ({ user, onOpenProfile, existingChats }: any) => {
   const myID = localStorage.getItem("userID");
+  const onlineUsers = useSelector((state: any) => state.online?.onlineUsers);
+
+  const isOnline =
+    user._id !== myID && onlineUsers?.includes(user._id.toString());
 
   const alreadyChatExists = existingChats?.some(
     (chat: any) =>
@@ -37,19 +42,25 @@ const UserCard = ({ user, onOpenProfile, existingChats }: any) => {
   return (
     <div className="bg-white border border-gray-200 rounded-xl p-3 flex items-center justify-between hover:shadow-lg transition-all duration-300 hover:border-indigo-400 hover:bg-linear-to-r hover:from-indigo-50/50 hover:to-purple-50/50 group">
       <div className="flex items-center gap-3 flex-1 min-w-0">
-        {/* Profile Image */}
-        <div
-          className="w-12 h-12 rounded-full bg-linear-to-r from-indigo-100 to-purple-100 border-2 border-indigo-200 flex items-center justify-center overflow-hidden cursor-pointer shrink-0 hover:border-indigo-500 hover:scale-105 transition-all duration-300 shadow-sm group-hover:shadow-md"
-          onClick={() => onOpenProfile(user._id)}
-        >
-          {user?.profilePic ? (
-            <img
-              src={user.profilePic}
-              alt={user.userFullName}
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <User className="h-5 w-5 text-indigo-600 group-hover:text-indigo-700" />
+        {/* Profile Image with Online Dot */}
+        <div className="relative shrink-0">
+          <div
+            className="w-12 h-12 rounded-full bg-linear-to-r from-indigo-100 to-purple-100 border-2 border-indigo-200 flex items-center justify-center overflow-hidden cursor-pointer hover:border-indigo-500 hover:scale-105 transition-all duration-300 shadow-sm group-hover:shadow-md"
+            onClick={() => onOpenProfile(user._id)}
+          >
+            {user?.profilePic ? (
+              <img
+                src={user.profilePic}
+                alt={user.userFullName}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <User className="h-5 w-5 text-indigo-600 group-hover:text-indigo-700" />
+            )}
+          </div>
+          {/* Chota green dot */}
+          {isOnline && (
+            <span className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full"></span>
           )}
         </div>
 

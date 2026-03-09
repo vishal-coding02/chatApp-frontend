@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Send } from "lucide-react";
 import api from "../../api/axios";
 import { socket } from "../../socket";
@@ -9,13 +9,29 @@ interface MessageInput {
 }
 const MessageInput = ({ chat }: MessageInput) => {
   const [message, setMessage] = useState("");
+  const typingTimeout = useRef<any>(null);
 
   const myId = localStorage.getItem("userID");
+  const handleTyping = () => {
+    socket.emit("typing", {
+      room: chat._id,
+      from: myId,
+    });
+
+    if (typingTimeout.current) {
+      clearTimeout(typingTimeout.current);
+    }
+
+    typingTimeout.current = setTimeout(() => {
+      socket.emit("stopTyping", {
+        room: chat._id,
+        from: myId,
+      });
+    }, 2000);
+  };
 
   const handleSend = async () => {
-    if (message == "") {
-      alert("please fill input filed");
-    }
+    if (!message.trim()) return;
 
     try {
       const encryptedMsg = encryptMessage(message);
@@ -35,9 +51,19 @@ const MessageInput = ({ chat }: MessageInput) => {
 
       console.log("message", encryptedMsg);
       setMessage("");
+
+      socket.emit("stopTyping", {
+        room: chat._id,
+        from: myId,
+      });
     } catch (err: any) {
       console.log(err.response?.data?.error || err.message);
     }
+  };
+
+  const handleChnage = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setMessage(e.target.value);
+    handleTyping();
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -53,7 +79,7 @@ const MessageInput = ({ chat }: MessageInput) => {
         <div className="flex-1 relative">
           <textarea
             value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            onChange={handleChnage}
             onKeyPress={handleKeyPress}
             placeholder="Type your message here..."
             className="w-full min-h-11 max-h-32 px-4 py-2.5 bg-white border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 text-sm resize-none align-middle"

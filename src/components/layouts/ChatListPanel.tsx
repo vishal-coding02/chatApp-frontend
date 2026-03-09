@@ -6,9 +6,13 @@ import api from "../../api/axios";
 interface ChatListPanelProps {
   onSelectChat: (chat: any) => void;
   onOpenProfile: any;
+  // onlineUsers: string[];
 }
 
-const ChatListPanel = ({ onSelectChat, onOpenProfile }: ChatListPanelProps) => {
+const ChatListPanel = ({
+  onSelectChat,
+  onOpenProfile,
+}: ChatListPanelProps) => {
   const [activeTab, setActiveTab] = useState<"chats" | "requests">("chats");
   const [regularChats, setRegularChats] = useState<any[]>([]);
   const [pendingChats, setPendingChats] = useState<any[]>([]);
