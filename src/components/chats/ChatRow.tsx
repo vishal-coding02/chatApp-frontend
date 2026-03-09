@@ -1,6 +1,7 @@
 import { Trash2, Clock, UserPlus, Check, X, User, Lock } from "lucide-react";
 import { useState } from "react";
 import { decryptMessage } from "../../utils/encryption";
+import { useSelector } from "react-redux";
 
 interface ChatRowProps {
   chat: {
@@ -11,10 +12,9 @@ interface ChatRowProps {
     createdBy?: string;
     lastMessageAt?: string;
     status?: string;
-    avatar?: string; // Add avatar field
+    avatar?: string;
   };
   onOpenProfile: (userId: string) => void;
-
   onSelectChat?: (chat: any) => void;
   onRequestAction?: (
     action: "accept" | "delete" | "block",
@@ -29,7 +29,7 @@ const ChatRow = ({
   onOpenProfile,
 }: ChatRowProps) => {
   const [showRequestActions, setShowRequestActions] = useState(false);
-
+  const onlineUsers = useSelector((state: any) => state.online?.onlineUsers);
   const myId = localStorage.getItem("userID");
 
   const isRequest = chat.status === "pending" && chat.createdBy !== myId;
@@ -40,15 +40,34 @@ const ChatRow = ({
 
   const chatAvatar = chatName.charAt(0).toUpperCase();
 
+  const isOnline = onlineUsers?.includes(otherUser._id);
+
   const decryptedLastMessage = chat.lastMessage
     ? decryptMessage(chat.lastMessage)
     : "";
 
   const messageTime = chat.lastMessageAt
-    ? new Date(chat.lastMessageAt).toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      })
+    ? (() => {
+        const now = new Date();
+        const messageDate = new Date(chat.lastMessageAt);
+        const diffMs = now.getTime() - messageDate.getTime();
+        const diffMins = Math.floor(diffMs / (1000 * 60));
+        const diffHrs = Math.floor(diffMs / (1000 * 60 * 60));
+        const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+        if (diffMins < 60) {
+          return messageDate.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+        } else if (diffHrs < 24) {
+          return `${diffHrs}hr`;
+        } else if (diffDays < 7) {
+          return `${diffDays}d`;
+        } else {
+          return messageDate.toLocaleDateString("en-US", { weekday: "short" });
+        }
+      })()
     : "";
 
   const handleClick = () => {
@@ -118,6 +137,11 @@ const ChatRow = ({
                 </span>
               )}
             </div>
+
+            {/* Chota green dot - sirf non-request users ke liye */}
+            {!isRequest && isOnline && (
+              <span className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full"></span>
+            )}
 
             {/* Indicators */}
             {isRequest && (

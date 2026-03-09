@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import api from "../api/axios";
 import { jwtTokenAction } from "../redux/reducer/AuthReducer";
+import { onlineUserAction } from "../redux/reducer/onlineReducer";
 import { socket } from "../socket";
 
 const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
@@ -30,13 +31,19 @@ const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
     if (userId) {
       socket.connect();
       socket.emit("identify", userId);
-      console.log("socket reconnected after refresh");
+
+      socket.on("onlineUsers", (usersArray) => {
+        console.log("Received full online list:", usersArray);
+        dispatch(onlineUserAction(usersArray));
+      });
+
+      console.log("Socket connected & listeners attached");
     }
 
     return () => {
-      socket.disconnect();
+      socket.off("onlineUsers");
     };
-  }, []);
+  }, [dispatch]);
 
   return <>{children}</>;
 };
