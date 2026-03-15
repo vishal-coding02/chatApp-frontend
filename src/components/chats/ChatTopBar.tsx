@@ -15,7 +15,7 @@ const ChatTopBar = ({ onOpenProfile }: any) => {
 
   const handleFetchUserProfile = async () => {
     try {
-      const res = await api.get(`/api/users/profile/${myId}`);
+      const res = await api.get(`/api/users/profile`);
       const data = res.data;
       setUser(data.user);
       console.log(data.message);

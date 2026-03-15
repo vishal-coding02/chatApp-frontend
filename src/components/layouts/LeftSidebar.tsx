@@ -14,7 +14,6 @@ const LeftSidebar = ({ onOpenProfile }: any) => {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  const id = localStorage.getItem("userID");
   const debounceRef = useRef<any>(null);
 
   const filteredUsers = users.filter((user) => user._id !== currentUserId);
@@ -37,7 +36,7 @@ const LeftSidebar = ({ onOpenProfile }: any) => {
 
   const handleMyChats = async () => {
     try {
-      const res = await api.get(`/api/chats/${id}`);
+      const res = await api.get("/api/chats");
       const chats = res.data.chats;
 
       const activeChats = chats.filter((chat: any) => chat.status === "active");

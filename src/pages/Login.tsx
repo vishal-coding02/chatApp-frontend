@@ -1,68 +1,20 @@
-import { useState } from "react";
-import { socket } from "../socket";
 import Navbar from "../components/layouts/Navbar";
-import api from "../api/axios";
-import { useDispatch } from "react-redux";
-import { jwtTokenAction, loginAction } from "../redux/reducer/AuthReducer";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
-
-interface LoginData {
-  email: string;
-  password: string;
-}
+import { useLogin } from "../hooks/useLogin";
 
 const Login = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [loginData, setLoginData] = useState<LoginData>({
-    email: "",
-    password: "",
-  });
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>("");
-
-  const handleLoginUser = async () => {
-    if (!loginData.email || !loginData.password) {
-      setErrorMessage("Please fill in all required fields");
-      return;
-    }
-
-    setIsLoading(true);
-    setErrorMessage("");
-
-    try {
-      const res = await api.post("/api/auth/login", loginData);
-
-      const data = res.data;
-      dispatch(jwtTokenAction(data.accessToken));
-      dispatch(loginAction(data.userData));
-
-      console.log(data.message);
-
-      localStorage.setItem("userID", data.userData._id);
-
-      socket.connect();
-      socket.emit("identify", data.userData._id);
-
-      navigate("/chatscreen");
-      // Reset
-      setLoginData({ email: "", password: "" });
-    } catch (err: any) {
-      const error = err.response?.data?.error || err.message;
-      setErrorMessage(error);
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      handleLoginUser();
-    }
-  };
+  const {
+    loginData,
+    setLoginData,
+    handleLoginUser,
+    isLoading,
+    errorMessage,
+    showPassword,
+    setShowPassword,
+    setErrorMessage,
+    handleKeyPress,
+  } = useLogin();
 
   return (
     <div className="min-h-screen bg-linear-to-br from-indigo-50 via-white to-purple-50">

@@ -2,17 +2,14 @@ import { useEffect, useState } from "react";
 import ChatTopBar from "../chats/ChatTopBar";
 import ChatRow from "../chats/ChatRow";
 import api from "../../api/axios";
+import { socket } from "../../socket";
 
 interface ChatListPanelProps {
   onSelectChat: (chat: any) => void;
   onOpenProfile: any;
-  // onlineUsers: string[];
 }
 
-const ChatListPanel = ({
-  onSelectChat,
-  onOpenProfile,
-}: ChatListPanelProps) => {
+const ChatListPanel = ({ onSelectChat, onOpenProfile }: ChatListPanelProps) => {
   const [activeTab, setActiveTab] = useState<"chats" | "requests">("chats");
   const [regularChats, setRegularChats] = useState<any[]>([]);
   const [pendingChats, setPendingChats] = useState<any[]>([]);
@@ -26,7 +23,7 @@ const ChatListPanel = ({
     try {
       setLoading({ chats: true, requests: true });
 
-      const res = await api.get(`/api/chats/${id}`);
+      const res = await api.get(`/api/chats`);
       const chats = res.data.chats;
 
       const activeChats = chats.filter((chat: any) => chat.status === "active");
@@ -61,9 +58,7 @@ const ChatListPanel = ({
 
   const acceptChatRequest = async (chatId: string) => {
     try {
-      const res = await api.patch("/api/chats/acceptChat", {
-        chatRoomId: chatId,
-      });
+      const res = await api.patch(`/api/chats/${chatId}/accept`);
 
       const acceptedChat = res.data.chat;
 
@@ -76,6 +71,42 @@ const ChatListPanel = ({
       console.log(err.response?.data?.error || err.message);
     }
   };
+
+  const deleteChat = async (chatId: string) => {
+    try {
+      await api.delete(`/api/chats/${chatId}`);
+
+      setRegularChats((prev) => prev.filter((chat) => chat._id !== chatId));
+
+      socket.emit("leaveRoom", chatId);
+
+      console.log("Chat deleted successfully");
+    } catch (err: any) {
+      console.log(err.response?.data?.error || err.message);
+    }
+  };
+
+  useEffect(() => {
+    if (regularChats.length > 0) {
+      regularChats.forEach((chat) => {
+        socket.emit("joinRooms", { user: id, room: chat._id });
+      });
+    }
+  }, [regularChats]);
+
+  useEffect(() => {
+    socket.on("lastMessage", ({ lastMessage, chatId, lastMessageAt }) => {
+      setRegularChats((prevChats) =>
+        prevChats.map((chat) =>
+          chat._id === chatId ? { ...chat, lastMessage, lastMessageAt } : chat,
+        ),
+      );
+    });
+
+    return () => {
+      socket.off("lastMessage");
+    };
+  }, []);
 
   useEffect(() => {
     if (activeTab === "requests") {
@@ -200,6 +231,7 @@ const ChatListPanel = ({
                   <ChatRow
                     key={chat._id}
                     chat={chat}
+                    onDeleteChat={deleteChat}
                     onSelectChat={
                       activeTab === "chats" ? onSelectChat : undefined
                     }

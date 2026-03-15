@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { X, Calendar, User as Mail } from "lucide-react";
 import type { UserData } from "../../interfaces";
-import api from "../../api/axios";
+import { fetchUserProfile } from "../../api/user.api";
 
 type UserProfileProps = {
   userId: string;
@@ -14,8 +14,7 @@ const UserProfile = ({ userId, onClose }: UserProfileProps) => {
 
   const handleFetchUserProfile = async () => {
     try {
-      const res = await api.get(`/api/users/profile/${userId}`);
-      const data = res.data;
+      const data = await fetchUserProfile();
       setUser(data.user);
       console.log(data.message);
     } catch (err) {

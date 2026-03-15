@@ -80,14 +80,12 @@ const ChatLayout = () => {
       </div>
 
       <div
+        onClick={() => setShowSideBar(!showSideBar)}
         className={`${selectedChat && "hidden"} fixed bottom-8 right-5 z-50 md:hidden 
   bg-linear-to-r from-indigo-500 to-purple-600 
   p-4 rounded-full shadow-lg cursor-pointer`}
       >
-        <UserRoundPlus
-          className="text-white w-6 h-6"
-          onClick={() => setShowSideBar(true)}
-        />
+        <UserRoundPlus className="text-white w-6 h-6" />
       </div>
 
       {!showChatBox && (
