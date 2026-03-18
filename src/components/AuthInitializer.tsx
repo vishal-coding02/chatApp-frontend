@@ -33,7 +33,6 @@ const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
       socket.emit("identify", userId);
 
       socket.on("onlineUsers", (usersArray) => {
-        console.log("Received full online list:", usersArray);
         dispatch(onlineUserAction(usersArray));
       });
 

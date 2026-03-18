@@ -1,76 +1,18 @@
 import UserCard from "../sidebar/UserCard";
 import { LogOut, Search } from "lucide-react";
-import { useLogout } from "../sidebar/LogoutButton";
-import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
-import api from "../../api/axios";
+
+import { useSideBar } from "../../hooks/useSideBar";
 
 const LeftSidebar = ({ onOpenProfile }: any) => {
-  const logout = useLogout();
-  const token = useSelector((state: any) => state.auth.jwtToken);
-  const currentUserId = localStorage.getItem("userID");
-  const [myChats, setMyChats] = useState([]);
-  const [users, setUsers] = useState<any[]>([]);
-  const [search, setSearch] = useState("");
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const id = localStorage.getItem("userID");
-  const debounceRef = useRef<any>(null);
-
-  const filteredUsers = users.filter((user) => user._id !== currentUserId);
-
-  const fetchUsers = async (searchValue: string, pageNumber: number) => {
-    try {
-      setLoading(true);
-
-      const res = await api.get(
-        `/api/users?name=${searchValue}&page=${pageNumber}`,
-      );
-
-      setUsers(res.data.users);
-    } catch (err) {
-      console.log("Fetch users error", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleMyChats = async () => {
-    try {
-      const res = await api.get(`/api/chats/${id}`);
-      const chats = res.data.chats;
-
-      const activeChats = chats.filter((chat: any) => chat.status === "active");
-
-      setMyChats(activeChats);
-    } catch (err: any) {
-      console.log(err.response?.data?.error || err.message);
-    }
-  };
-
-  useEffect(() => {
-    handleMyChats();
-  }, []);
-
-  useEffect(() => {
-    if (!token) return;
-
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-    }
-
-    debounceRef.current = setTimeout(() => {
-      setPage(1);
-      fetchUsers(search, 1);
-    }, 500);
-
-    return () => clearTimeout(debounceRef.current);
-  }, [search, token]);
-
-  useEffect(() => {
-    if (!token) return;
-    fetchUsers(search, page);
-  }, [page, token]);
+  const {
+    logout,
+    search,
+    setPage,
+    setSearch,
+    loading,
+    filteredUsers,
+    myChats,
+  } = useSideBar();
 
   return (
     <div className="h-full flex flex-col bg-linear-to-b from-white to-indigo-50/30 p-4 border-r border-gray-100">

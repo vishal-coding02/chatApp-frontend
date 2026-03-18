@@ -83,7 +83,7 @@ const Home = () => {
                 Secure & Private
               </h3>
               <p className="text-gray-600">
-                End-to-end encryption keeps your conversations safe
+                AES encryption keeps your conversations safe
               </p>
             </div>
 

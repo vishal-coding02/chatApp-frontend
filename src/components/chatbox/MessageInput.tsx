@@ -35,21 +35,26 @@ const MessageInput = ({ chat }: MessageInput) => {
 
     try {
       const encryptedMsg = encryptMessage(message);
-      const res = await api.post("/api/message/sendMessage", {
+      const res = await api.post("/api/messages", {
         chatRoomId: chat._id,
         text: encryptedMsg,
       });
 
       const data = res.data;
-      console.log(data.message);
 
       socket.emit("sendMessage", {
         from: myId,
         message: encryptedMsg,
         room: chat._id,
+        messageId: data.result._id,
       });
 
-      console.log("message", encryptedMsg);
+      socket.emit("lastMessageUpdate", {
+        room: chat._id,
+        chatId: chat._id,
+        lastMessage: encryptedMsg,
+        lastMessageAt: data.result.createdAt,
+      });
       setMessage("");
 
       socket.emit("stopTyping", {
