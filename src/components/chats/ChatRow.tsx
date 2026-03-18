@@ -16,6 +16,7 @@ interface ChatRowProps {
   };
   onOpenProfile: (userId: string) => void;
   onSelectChat?: (chat: any) => void;
+  onDeleteChat?: (chatId: string) => void;
   onRequestAction?: (
     action: "accept" | "delete" | "block",
     chatId: string,
@@ -27,8 +28,10 @@ const ChatRow = ({
   onSelectChat,
   onRequestAction,
   onOpenProfile,
+  onDeleteChat
 }: ChatRowProps) => {
   const [showRequestActions, setShowRequestActions] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const onlineUsers = useSelector((state: any) => state.online?.onlineUsers);
   const myId = localStorage.getItem("userID");
 
@@ -62,10 +65,15 @@ const ChatRow = ({
           });
         } else if (diffHrs < 24) {
           return `${diffHrs}hr`;
-        } else if (diffDays < 7) {
+        } else if (diffDays < 4) {
           return `${diffDays}d`;
         } else {
-          return messageDate.toLocaleDateString("en-US", { weekday: "short" });
+          return messageDate.toLocaleDateString("en-US", {
+            weekday: "short",
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+          });
         }
       })()
     : "";
@@ -83,6 +91,26 @@ const ChatRow = ({
       onRequestAction(action, chat._id);
       setShowRequestActions(false);
     }
+  };
+
+  const handleDeleteClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowDeleteConfirm(true);
+  };
+
+  const handleConfirmDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
+
+    if (onDeleteChat) {
+      onDeleteChat(chat._id);
+    }
+
+    setShowDeleteConfirm(false);
+  };
+
+  const handleCancelDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowDeleteConfirm(false);
   };
 
   return (
@@ -176,7 +204,7 @@ const ChatRow = ({
         </div>
 
         {/* Right Side - Buttons */}
-        <div>
+        <div className="relative">
           {isRequest ? (
             <div className="flex items-center gap-2">
               {showRequestActions ? (
@@ -219,14 +247,38 @@ const ChatRow = ({
             </div>
           ) : (
             <button
-              className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg"
-              onClick={(e) => {
-                e.stopPropagation();
-                console.log("Delete chat", chat._id);
-              }}
+              className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg cursor-pointer"
+              onClick={handleDeleteClick}
             >
               <Trash2 className="h-4 w-4" />
             </button>
+          )}
+
+          {/* Delete Confirmation Popup */}
+          {showDeleteConfirm && !isRequest && (
+            <div className="absolute right-0 top-0 mt-10 z-10">
+              <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-4 w-64">
+                <p className="text-sm text-gray-700 font-medium mb-3">
+                  Are you sure to delete this chat?
+                </p>
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleConfirmDelete}
+                    className="flex-1 px-3 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    Delete
+                  </button>
+                  <button
+                    onClick={handleCancelDelete}
+                    className="flex-1 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
+                  >
+                    <X className="h-4 w-4" />
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
           )}
         </div>
       </div>

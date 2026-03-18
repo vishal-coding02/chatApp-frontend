@@ -5,15 +5,15 @@ export interface UserData {
   userEmail?: string;
   avatar?: string;
   createdAt?: string;
-  profilePic? : string
+  profilePic?: string;
 }
 
 export interface Message {
   _id?: string;
-  text: string;
+  text?: string;
   senderId: string;
   isMe?: boolean;
-  createdAt: string;
+  createdAt?: string;
   status?: string;
 }
 
