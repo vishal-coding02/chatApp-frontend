@@ -89,7 +89,7 @@ const ChatLayout = () => {
       </div>
 
       {!showChatBox && (
-        <div className="hidden md:flex w-[40%] h-full items-center justify-center bg-white/50 border-l border-gray-100">
+        <div className="hidden md:flex w-[38%] h-full items-center justify-center bg-white/50 border-l border-gray-100">
           <div className="text-center p-8">
             <div className="w-24 h-24 mx-auto bg-linear-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mb-6">
               <svg

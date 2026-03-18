@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux";
 import { Bell, User, Image, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import api from "../../api/axios";
 import type { UserData } from "../../interfaces";
+import { fetchUserProfile } from "../../api/user.api";
 
 const ChatTopBar = ({ onOpenProfile }: any) => {
   const userData = useSelector((state: any) => state.auth.userData);
@@ -11,12 +11,13 @@ const ChatTopBar = ({ onOpenProfile }: any) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isImagePreviewOpen, setIsImagePreviewOpen] = useState(false);
 
-  const myId = localStorage.getItem("userID");
+  const userId = localStorage.getItem("userID");
 
   const handleFetchUserProfile = async () => {
     try {
-      const res = await api.get(`/api/users/profile`);
-      const data = res.data;
+      if (!userId) return;
+      const data = await fetchUserProfile(userId);
+
       setUser(data.user);
       console.log(data.message);
     } catch (err) {
@@ -25,7 +26,7 @@ const ChatTopBar = ({ onOpenProfile }: any) => {
   };
 
   useEffect(() => {
-    if (myId) {
+    if (userId) {
       handleFetchUserProfile();
     }
   }, []);
@@ -88,7 +89,7 @@ const ChatTopBar = ({ onOpenProfile }: any) => {
                   <button
                     onClick={() => {
                       setIsProfileMenuOpen(false);
-                      onOpenProfile(myId);
+                      onOpenProfile(userId);
                     }}
                     className="w-full px-4 py-3 text-left flex items-center gap-3 hover:bg-gray-50 transition-colors duration-200"
                   >

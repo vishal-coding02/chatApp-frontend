@@ -6,7 +6,7 @@ export const loginUser = async (data: { email: string; password: string }) => {
 };
 
 export const signUpUser = async (data: {
-  fullname: string;
+  fullName: string;
   username: string;
   email: string;
   password: string;

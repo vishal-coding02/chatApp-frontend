@@ -14,7 +14,7 @@ const UserProfile = ({ userId, onClose }: UserProfileProps) => {
 
   const handleFetchUserProfile = async () => {
     try {
-      const data = await fetchUserProfile();
+      const data = await fetchUserProfile(userId);
       setUser(data.user);
       console.log(data.message);
     } catch (err) {

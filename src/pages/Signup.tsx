@@ -124,9 +124,9 @@ const Signup = () => {
                     </div>
                     <input
                       type="text"
-                      value={user.fullname}
+                      value={user.fullName}
                       onChange={(e) => {
-                        setUser({ ...user, fullname: e.target.value });
+                        setUser({ ...user, fullName: e.target.value });
                         setErrorMessage("");
                       }}
                       placeholder="John Doe"

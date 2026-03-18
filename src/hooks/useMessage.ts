@@ -13,6 +13,9 @@ export const useMessage = ({ chat, typingUser }: UseMessageProps) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [shouldAutoScroll, setShouldAutoScroll] = useState(true);
   const [activeMessageId, setActiveMessageId] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(false);
+  const [isFetchingMore, setIsFetchingMore] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
@@ -33,9 +36,69 @@ export const useMessage = ({ chat, typingUser }: UseMessageProps) => {
   };
 
   const handleScroll = () => {
-    if (messagesContainerRef.current) {
-      const atBottom = isAtBottom();
-      setShouldAutoScroll(atBottom);
+    if (!messagesContainerRef.current) return;
+
+    const { scrollTop } = messagesContainerRef.current;
+    const atBottom = isAtBottom();
+    setShouldAutoScroll(atBottom);
+
+    if (scrollTop === 0 && hasMore && !isFetchingMore) {
+      loadMoreMessages();
+    }
+  };
+
+  const loadMoreMessages = async () => {
+    if (!hasMore || isFetchingMore) return;
+    setIsFetchingMore(true);
+
+    const container = messagesContainerRef.current;
+    const prevScrollHeight = container?.scrollHeight ?? 0;
+
+    try {
+      const nextPage = page + 1;
+      const res = await getMessagesApi(chat._id, nextPage);
+
+      const decryptedMessages = res.data.messages.map((msg: any) => ({
+        ...msg,
+        text: decryptMessage(msg.text),
+      }));
+
+      setMessages((prev) => [...decryptedMessages, ...prev]);
+      setPage(nextPage);
+      setHasMore(res.data.hasMore);
+
+      requestAnimationFrame(() => {
+        if (container) {
+          const newScrollHeight = container.scrollHeight;
+          container.scrollTop = newScrollHeight - prevScrollHeight;
+        }
+      });
+    } catch (err: any) {
+      console.log(err.response?.data?.error || err.message);
+    } finally {
+      setIsFetchingMore(false);
+    }
+  };
+
+  const handleGetMessages = async () => {
+    try {
+      setPage(1);
+      const res = await getMessagesApi(chat._id, 1);
+
+      const decryptedMessages = res.data.messages.map((msg: any) => ({
+        ...msg,
+        text: decryptMessage(msg.text),
+      }));
+
+      setMessages(decryptedMessages);
+      setHasMore(res.data.hasMore);
+
+      setTimeout(() => {
+        scrollToBottom();
+        setShouldAutoScroll(true);
+      }, 100);
+    } catch (err: any) {
+      console.log(err.response?.data?.error || err.message);
     }
   };
 
@@ -59,26 +122,6 @@ export const useMessage = ({ chat, typingUser }: UseMessageProps) => {
       month: "short",
       year: "numeric",
     });
-  };
-
-  const handleGetMessages = async () => {
-    try {
-      const res = await getMessagesApi(chat._id);
-
-      const decryptedMessages = res.data.messages.map((msg: any) => ({
-        ...msg,
-        text: decryptMessage(msg.text),
-      }));
-
-      setMessages(decryptedMessages);
-
-      setTimeout(() => {
-        scrollToBottom();
-        setShouldAutoScroll(true);
-      }, 100);
-    } catch (err: any) {
-      console.log(err.response?.data?.error || err.message);
-    }
   };
 
   const handleDeleteMessage = async (messageId: string) => {
@@ -169,6 +212,8 @@ export const useMessage = ({ chat, typingUser }: UseMessageProps) => {
     messagesContainerRef,
     messagesEndRef,
     myId,
+    isFetchingMore,
+    hasMore,
     activeMessageId,
     handleDeleteMessage,
     handleMessageClick,

@@ -13,6 +13,8 @@ const MessagesArea = ({ chat, typingUser, typingRoom }: MessagesAreaProps) => {
     messagesContainerRef,
     messagesEndRef,
     myId,
+    isFetchingMore,
+    hasMore,
     activeMessageId,
     handleDeleteMessage,
     handleMessageClick,
@@ -27,6 +29,17 @@ const MessagesArea = ({ chat, typingUser, typingRoom }: MessagesAreaProps) => {
       className="flex-1 p-4 space-y-4 overflow-y-auto bg-linear-to-b from-white to-indigo-50/30"
     >
       <div className="space-y-3">
+        {isFetchingMore && (
+          <div className="flex justify-center py-2">
+            <div className="w-5 h-5 border-2 border-indigo-400 border-t-transparent rounded-full animate-spin" />
+          </div>
+        )}
+
+        {!hasMore && messages.length > 0 && (
+          <div className="flex justify-center">
+            <span className="text-xs text-gray-400 py-1">No more messages</span>
+          </div>
+        )}
         {messages.map((message, index) => {
           const isMe = message.senderId === myId;
 
@@ -50,7 +63,7 @@ const MessagesArea = ({ chat, typingUser, typingRoom }: MessagesAreaProps) => {
               >
                 <div
                   onClick={() => handleMessageClick(message._id ?? "")}
-                  className={`max-w-[70%] rounded-2xl p-3 text-sm ${
+                  className={`max-w-[70%] rounded-2xl p-3 text-sm wrap-break-word ${
                     isMe
                       ? "bg-linear-to-r from-indigo-600 to-purple-600 text-white rounded-tr-none"
                       : "bg-white border border-gray-200 text-gray-800 rounded-tl-none"

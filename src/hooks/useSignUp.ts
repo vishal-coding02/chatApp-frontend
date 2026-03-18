@@ -15,7 +15,7 @@ export const useSignUp = () => {
   const [successMessage, setSuccessMessage] = useState<string>("");
   const [imagePreview, setImagePreview] = useState<string>("");
   const [user, setUser] = useState<UserData>({
-    fullname: "",
+    fullName: "",
     username: "",
     email: "",
     password: "",
@@ -55,7 +55,7 @@ export const useSignUp = () => {
     setErrorMessage("");
     setSuccessMessage("");
 
-    if (!user.fullname || !user.username || !user.email || !user.password) {
+    if (!user.fullName || !user.username || !user.email || !user.password) {
       setErrorMessage("Please fill in all required fields");
       return;
     }
@@ -79,7 +79,7 @@ export const useSignUp = () => {
       console.log(data.message);
 
       setUser({
-        fullname: "",
+        fullName: "",
         username: "",
         email: "",
         password: "",
