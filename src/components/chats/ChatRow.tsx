@@ -28,7 +28,7 @@ const ChatRow = ({
   onSelectChat,
   onRequestAction,
   onOpenProfile,
-  onDeleteChat
+  onDeleteChat,
 }: ChatRowProps) => {
   const [showRequestActions, setShowRequestActions] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -53,6 +53,7 @@ const ChatRow = ({
     ? (() => {
         const now = new Date();
         const messageDate = new Date(chat.lastMessageAt);
+
         const diffMs = now.getTime() - messageDate.getTime();
         const diffMins = Math.floor(diffMs / (1000 * 60));
         const diffHrs = Math.floor(diffMs / (1000 * 60 * 60));
@@ -63,18 +64,26 @@ const ChatRow = ({
             hour: "2-digit",
             minute: "2-digit",
           });
-        } else if (diffHrs < 24) {
+        }
+
+        if (diffHrs < 24) {
           return `${diffHrs}hr`;
-        } else if (diffDays < 4) {
+        }
+
+        if (diffDays < 3) {
           return `${diffDays}d`;
-        } else {
+        }
+
+        if (diffDays < 7) {
           return messageDate.toLocaleDateString("en-US", {
             weekday: "short",
-            month: "short",
-            day: "numeric",
-            year: "numeric",
           });
         }
+
+        return messageDate.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+        });
       })()
     : "";
 

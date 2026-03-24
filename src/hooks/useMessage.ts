@@ -13,9 +13,9 @@ export const useMessage = ({ chat, typingUser }: UseMessageProps) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [shouldAutoScroll, setShouldAutoScroll] = useState(true);
   const [activeMessageId, setActiveMessageId] = useState<string | null>(null);
-  const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
+  const [lastCreatedAt, setLastCreatedAt] = useState<string>("");
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
@@ -55,8 +55,7 @@ export const useMessage = ({ chat, typingUser }: UseMessageProps) => {
     const prevScrollHeight = container?.scrollHeight ?? 0;
 
     try {
-      const nextPage = page + 1;
-      const res = await getMessagesApi(chat._id, nextPage);
+      const res = await getMessagesApi(chat._id, lastCreatedAt);
 
       const decryptedMessages = res.data.messages.map((msg: any) => ({
         ...msg,
@@ -64,8 +63,11 @@ export const useMessage = ({ chat, typingUser }: UseMessageProps) => {
       }));
 
       setMessages((prev) => [...decryptedMessages, ...prev]);
-      setPage(nextPage);
       setHasMore(res.data.hasMore);
+
+      if (decryptedMessages.length > 0) {
+        setLastCreatedAt(decryptedMessages[0].createdAt);
+      }
 
       requestAnimationFrame(() => {
         if (container) {
@@ -82,8 +84,7 @@ export const useMessage = ({ chat, typingUser }: UseMessageProps) => {
 
   const handleGetMessages = async () => {
     try {
-      setPage(1);
-      const res = await getMessagesApi(chat._id, 1);
+      const res = await getMessagesApi(chat._id);
 
       const decryptedMessages = res.data.messages.map((msg: any) => ({
         ...msg,
@@ -92,6 +93,10 @@ export const useMessage = ({ chat, typingUser }: UseMessageProps) => {
 
       setMessages(decryptedMessages);
       setHasMore(res.data.hasMore);
+
+      if (decryptedMessages.length > 0) {
+        setLastCreatedAt(decryptedMessages[0].createdAt);
+      }
 
       setTimeout(() => {
         scrollToBottom();

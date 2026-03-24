@@ -1,7 +1,7 @@
 // UserProfile.tsx
-import { useState, useEffect } from "react";
 import { X, Calendar, User as Mail } from "lucide-react";
 import type { UserData } from "../../interfaces";
+import { useQuery } from "@tanstack/react-query";
 import { fetchUserProfile } from "../../api/user.api";
 
 type UserProfileProps = {
@@ -10,23 +10,14 @@ type UserProfileProps = {
 };
 
 const UserProfile = ({ userId, onClose }: UserProfileProps) => {
-  const [user, setUser] = useState<UserData>({});
+  const { data } = useQuery({
+    queryKey: ["userProfile", userId],
+    queryFn: () => fetchUserProfile(userId),
+    enabled: !!userId,
+    staleTime: 10 * 60 * 1000,
+  });
 
-  const handleFetchUserProfile = async () => {
-    try {
-      const data = await fetchUserProfile(userId);
-      setUser(data.user);
-      console.log(data.message);
-    } catch (err) {
-      console.log("Fetch users error", err);
-    }
-  };
-
-  useEffect(() => {
-    if (userId) {
-      handleFetchUserProfile();
-    }
-  }, [userId]);
+  const user: UserData = data?.user || {};
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return "Recently";
