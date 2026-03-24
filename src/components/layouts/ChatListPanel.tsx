@@ -2,7 +2,6 @@ import ChatTopBar from "../chats/ChatTopBar";
 import ChatRow from "../chats/ChatRow";
 import { useChat } from "../../hooks/useChat";
 
-
 interface ChatListPanelProps {
   onSelectChat: (chat: any) => void;
   onOpenProfile: any;

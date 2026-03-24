@@ -1,25 +1,22 @@
 import { RouterProvider } from "react-router-dom";
+import { useState } from "react";
 import AuthInitializer from "./components/AuthInitializer";
 import router from "./router";
 import { useSelector } from "react-redux";
+import SplashScreen from "./components/SplashScreen";
 
 const AppRoutes = () => {
   const isAuthReady = useSelector((state: any) => state.auth.isAuthReady);
-
-  if (!isAuthReady) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
-  }
-
+  if (!isAuthReady) return null;
   return <RouterProvider router={router} />;
 };
 
 const App = () => {
+  const [showSplash, setShowSplash] = useState(true);
+
   return (
     <AuthInitializer>
+      {showSplash && <SplashScreen onDone={() => setShowSplash(false)} />}
       <AppRoutes />
     </AuthInitializer>
   );

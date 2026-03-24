@@ -3,7 +3,12 @@ import api from "../../api/axios";
 import { User, MessageSquarePlus, MessageSquare } from "lucide-react";
 import { useSelector } from "react-redux";
 
-const UserCard = ({ user, onOpenProfile, existingChats }: any) => {
+const UserCard = ({
+  user,
+  onOpenProfile,
+  existingChats,
+  onChatCreated,
+}: any) => {
   const myID = localStorage.getItem("userID");
   const onlineUsers = useSelector((state: any) => state.online?.onlineUsers);
 
@@ -33,7 +38,9 @@ const UserCard = ({ user, onOpenProfile, existingChats }: any) => {
         user: myID,
         room: data.roomId,
       });
-      alert(data.message);
+
+      alert("chat created");
+      await onChatCreated();
     } catch (err: any) {
       console.log(err.response?.data?.error || err.message);
     }

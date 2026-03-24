@@ -127,7 +127,7 @@ export const useChat = () => {
       acceptChatRequest(chatId);
     }
   };
-  
+
   return {
     deleteChat,
     activeTab,
@@ -136,5 +136,6 @@ export const useChat = () => {
     pendingChats,
     handleRequestAction,
     regularChats,
+    myRegularChats,
   };
 };

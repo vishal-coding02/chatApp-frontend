@@ -1,73 +1,90 @@
-# React + TypeScript + Vite
+# ChatApp - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack real-time chat application with secure messaging, encryption, and advanced features like message requests, typing indicators, and chat restoration.
 
-Currently, two official plugins are available:
+## Live Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+[View Live on Vercel](https://chat-app-frontend-mauve-pi.vercel.app/)
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Real-time messaging using Socket.io
+- Secure user authentication with JWT
+- AES (Advanced Encryption Standard) message encryption using Crypto.js
+- Message pagination with infinite scroll
+- Online/Offline status indicator
+- Typing indicator (shows when other user is typing)
+- Message request system (first message requires acceptance before chat starts)
+- Chat delete with auto-restore (if deleted user receives a new message, chat restores automatically)
+- Responsive UI
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Framework:** React + TypeScript
+- **Build Tool:** Vite
+- **Styling:** Tailwind CSS
+- **Real-time:** Socket.io Client
+- **Encryption:** Crypto.js
+- **Deployment:** Vercel
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Deployment
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- **Frontend (Vercel):** https://chat-app-frontend-mauve-pi.vercel.app/
+- **Backend (Railway):** https://chatapp-backend-production-05f2.up.railway.app/
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+> Note: Backend is used for API and real-time communication.
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js v18+
+- npm
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/vishal-coding02/chatApp-frontend.git
+
+# Go to project folder
+cd chatApp-frontend
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Environment Variables
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Create a `.env` file in the root folder and add:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+VITE_API_URL=http://localhost:5000  # For production, use your deployed backend URL
+VITE_CRYPTO_SECRET=your_secret_key
+```
+
+## Screenshots
+
+
+## Project Structure
+
+```
+chatApp-frontend/
+├── src/
+│   ├── components/    # Reusable UI components
+│   ├── pages/         # App pages (Login, Chat, etc.)
+│   ├── hooks/         # Custom React hooks
+│   ├── utils/         # Helper functions
+│   └── App.tsx        # Main app file
+├── public/
+├── index.html
+└── vite.config.ts
+```
+
+## Backend Repository
+
+> This is only the frontend. Backend repo is here:
+> [chatApp-backend](https://github.com/vishal-coding02/chatApp-backend)

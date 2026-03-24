@@ -2,8 +2,10 @@ import UserCard from "../sidebar/UserCard";
 import { LogOut, Search } from "lucide-react";
 
 import { useSideBar } from "../../hooks/useSideBar";
+import { useChat } from "../../hooks/useChat";
 
 const LeftSidebar = ({ onOpenProfile }: any) => {
+  const { myRegularChats } = useChat();
   const {
     logout,
     search,
@@ -71,12 +73,13 @@ const LeftSidebar = ({ onOpenProfile }: any) => {
         )}
 
         <div className="space-y-3">
-          {filteredUsers.map((user) => (
+          {filteredUsers.map((user: any) => (
             <UserCard
               key={user._id}
               user={user}
               onOpenProfile={onOpenProfile}
               existingChats={myChats}
+              onChatCreated={myRegularChats}
             />
           ))}
         </div>

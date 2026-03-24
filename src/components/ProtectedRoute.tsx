@@ -6,7 +6,7 @@ const ProtectedRoute = ({ children }: any) => {
     (state: any) => state.auth,
   );
 
-  if (!isAuthReady) return null; 
+  if (!isAuthReady) return null;
 
   if (!isAuthenticated) return <Navigate to="/auth/login" replace />;
 

@@ -2,10 +2,16 @@ import api from "./axios";
 
 export const getMessagesApi = (
   conversationId: string,
-  page: number = 1,
+  lastCreatedAt?: string,
   limit: number = 20,
 ) => {
-  return api.get(`/api/messages/${conversationId}?page=${page}&limit=${limit}`);
+  let url = `/api/messages/${conversationId}?limit=${limit}`;
+
+  if (lastCreatedAt) {
+    url += `&lastCreatedAt=${lastCreatedAt}`;
+  }
+
+  return api.get(url);
 };
 
 export const deleteMessageApi = (messageId: string) => {
