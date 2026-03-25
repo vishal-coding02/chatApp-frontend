@@ -72,10 +72,14 @@ const MessagesArea = ({ chat, typingUser, typingRoom }: MessagesAreaProps) => {
                   <p>{message.text}</p>
 
                   <div className="text-xs mt-1 opacity-70">
-                    {new Date(message.createdAt ?? "").toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
+                    {new Date(message.createdAt ?? "").toLocaleTimeString(
+                      "en-US",
+                      {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: true,
+                      },
+                    )}
                   </div>
                 </div>
 
