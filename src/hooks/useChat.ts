@@ -1,5 +1,5 @@
 import { socket } from "../socket";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import {
   regularChatReqApi,
   pendingChatReqApi,
@@ -16,9 +16,9 @@ export const useChat = () => {
     requests: false,
   });
 
-  const id = localStorage.getItem("userID");
+  const id = useMemo(() => localStorage.getItem("userID"), []);
 
-  const myRegularChats = async () => {
+  const myRegularChats = useCallback(async () => {
     try {
       setLoading({ chats: true, requests: true });
 
@@ -38,9 +38,9 @@ export const useChat = () => {
       setLoading({ chats: false, requests: false });
       console.log(err.response?.data?.error || err.message);
     }
-  };
+  }, [id]);
 
-  const fetchPendingRequests = async () => {
+  const fetchPendingRequests = useCallback(async () => {
     try {
       setLoading((prev) => ({ ...prev, requests: true }));
 
@@ -53,18 +53,14 @@ export const useChat = () => {
       setLoading((prev) => ({ ...prev, requests: false }));
       console.log(err.response?.data?.error || err.message);
     }
-  };
+  }, []);
 
   const acceptChatRequest = async (chatId: string) => {
     try {
       const res = await acceptChatReqApi(chatId);
-
       const acceptedChat = res.data.chat;
-
       setPendingChats((prev) => prev.filter((chat) => chat._id !== chatId));
-
       setRegularChats((prev) => [...prev, acceptedChat]);
-
       console.log("Request Accepted Successfully");
     } catch (err: any) {
       console.log(err.response?.data?.error || err.message);
@@ -74,11 +70,8 @@ export const useChat = () => {
   const deleteChat = async (chatId: string) => {
     try {
       await deleteChatApi(chatId);
-
       setRegularChats((prev) => prev.filter((chat) => chat._id !== chatId));
-
       socket.emit("leaveRoom", chatId);
-
       console.log("Chat deleted successfully");
     } catch (err: any) {
       console.log(err.response?.data?.error || err.message);
@@ -111,13 +104,13 @@ export const useChat = () => {
     if (activeTab === "requests") {
       fetchPendingRequests();
     }
-  }, [activeTab]);
+  }, [activeTab, fetchPendingRequests]);
 
   useEffect(() => {
     if (activeTab === "chats") {
       myRegularChats();
     }
-  }, [activeTab]);
+  }, [activeTab, myRegularChats]);
 
   const handleRequestAction = (
     action: "accept" | "delete" | "block",

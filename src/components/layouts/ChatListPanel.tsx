@@ -108,9 +108,20 @@ const ChatListPanel = ({ onSelectChat, onOpenProfile }: ChatListPanelProps) => {
 
           {/* Loading States */}
           {loading[activeTab] ? (
-            <div className="text-center py-10">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mx-auto"></div>
-              <p className="text-gray-500 mt-2">Loading...</p>
+            <div className="space-y-2">
+              {[1, 2, 3].map((i) => (
+                <div
+                  key={i}
+                  className="flex items-center gap-3 px-4 py-3 border-b border-gray-100 animate-pulse"
+                >
+                  <div className="w-11 h-11 rounded-full bg-gray-200 shrink-0" />
+                  <div className="flex-1 flex flex-col gap-2">
+                    <div className="h-3 bg-gray-200 rounded w-[55%]" />
+                    <div className="h-2.5 bg-gray-200 rounded w-[38%]" />
+                    <div className="h-2 bg-gray-200 rounded w-[25%]" />
+                  </div>
+                </div>
+              ))}
             </div>
           ) : (
             <>

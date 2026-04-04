@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback, useMemo } from "react";
 import type { Message } from "../interfaces/index";
 import { socket } from "../socket";
 import { decryptMessage } from "../utils/encryption";
@@ -20,34 +20,20 @@ export const useMessage = ({ chat, typingUser }: UseMessageProps) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
-  const myId = localStorage.getItem("userID");
+  const myId = useMemo(() => localStorage.getItem("userID"), []);
 
-  const scrollToBottom = () => {
+  const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  }, []);
 
-  const isAtBottom = () => {
+  const isAtBottom = useCallback(() => {
     if (!messagesContainerRef.current) return true;
-
     const { scrollTop, scrollHeight, clientHeight } =
       messagesContainerRef.current;
-
     return Math.abs(scrollHeight - scrollTop - clientHeight) < 5;
-  };
+  }, []);
 
-  const handleScroll = () => {
-    if (!messagesContainerRef.current) return;
-
-    const { scrollTop } = messagesContainerRef.current;
-    const atBottom = isAtBottom();
-    setShouldAutoScroll(atBottom);
-
-    if (scrollTop === 0 && hasMore && !isFetchingMore) {
-      loadMoreMessages();
-    }
-  };
-
-  const loadMoreMessages = async () => {
+  const loadMoreMessages = useCallback(async () => {
     if (!hasMore || isFetchingMore) return;
     setIsFetchingMore(true);
 
@@ -80,9 +66,20 @@ export const useMessage = ({ chat, typingUser }: UseMessageProps) => {
     } finally {
       setIsFetchingMore(false);
     }
-  };
+  }, [hasMore, isFetchingMore, chat._id, lastCreatedAt]);
 
-  const handleGetMessages = async () => {
+  const handleScroll = useCallback(() => {
+    if (!messagesContainerRef.current) return;
+    const { scrollTop } = messagesContainerRef.current;
+    const atBottom = isAtBottom();
+    setShouldAutoScroll(atBottom);
+
+    if (scrollTop === 0 && hasMore && !isFetchingMore) {
+      loadMoreMessages();
+    }
+  }, [isAtBottom, hasMore, isFetchingMore, loadMoreMessages]);
+
+  const handleGetMessages = useCallback(async () => {
     try {
       const res = await getMessagesApi(chat._id);
 
@@ -105,15 +102,9 @@ export const useMessage = ({ chat, typingUser }: UseMessageProps) => {
     } catch (err: any) {
       console.log(err.response?.data?.error || err.message);
     }
-  };
+  }, [chat._id, scrollToBottom]);
 
-  useEffect(() => {
-    if (shouldAutoScroll) {
-      scrollToBottom();
-    }
-  }, [messages, typingUser]);
-
-  const formatMessageDate = (dateString: string) => {
+  const formatMessageDate = useCallback((dateString: string) => {
     const date = new Date(dateString);
     const today = new Date();
     const yesterday = new Date(today);
@@ -127,39 +118,46 @@ export const useMessage = ({ chat, typingUser }: UseMessageProps) => {
       month: "short",
       year: "numeric",
     });
-  };
+  }, []);
 
-  const handleDeleteMessage = async (messageId: string) => {
-    setMessages((prev) => prev.filter((m) => m._id !== messageId));
-    setActiveMessageId(null);
+  const handleDeleteMessage = useCallback(
+    async (messageId: string) => {
+      setMessages((prev) => prev.filter((m) => m._id !== messageId));
+      setActiveMessageId(null);
 
-    try {
-      const res = await deleteMessageApi(messageId);
+      try {
+        const res = await deleteMessageApi(messageId);
+        socket.emit("deleteMessage", { messageId, room: chat._id });
 
-      socket.emit("deleteMessage", { messageId, room: chat._id });
-
-      const updatedChat = res.data.updatedChat;
-      if (updatedChat) {
-        socket.emit("lastMessageUpdate", {
-          room: chat._id,
-          chatId: chat._id,
-          lastMessage: updatedChat.lastMessage,
-          lastMessageAt: updatedChat.lastMessageAt,
-        });
+        const updatedChat = res.data.updatedChat;
+        if (updatedChat) {
+          socket.emit("lastMessageUpdate", {
+            room: chat._id,
+            chatId: chat._id,
+            lastMessage: updatedChat.lastMessage,
+            lastMessageAt: updatedChat.lastMessageAt,
+          });
+        }
+      } catch (err: any) {
+        console.log(err.response?.data?.error || err.message);
       }
-    } catch (err: any) {
-      console.log(err.response?.data?.error || err.message);
-    }
-  };
+    },
+    [chat._id],
+  );
 
-  const handleMessageClick = (messageId: string) => {
+  const handleMessageClick = useCallback((messageId: string) => {
     setActiveMessageId((prevId) => (prevId === messageId ? null : messageId));
-  };
+  }, []);
+
+  useEffect(() => {
+    if (shouldAutoScroll) {
+      scrollToBottom();
+    }
+  }, [messages, typingUser, shouldAutoScroll, scrollToBottom]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
-
       if (
         !target.closest(".message-container") &&
         !target.closest(".delete-btn")
@@ -169,7 +167,6 @@ export const useMessage = ({ chat, typingUser }: UseMessageProps) => {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
@@ -187,14 +184,13 @@ export const useMessage = ({ chat, typingUser }: UseMessageProps) => {
     if (chat?._id) {
       handleGetMessages();
     }
-  }, [chat]);
+  }, [chat._id, handleGetMessages]);
 
   useEffect(() => {
     if (!chat?._id) return;
 
     socket.on("message", (newMsg) => {
       const decrypted = decryptMessage(newMsg.message);
-      console.log(newMsg.messageId);
 
       setMessages((prev) => [
         ...prev,
@@ -210,7 +206,7 @@ export const useMessage = ({ chat, typingUser }: UseMessageProps) => {
     return () => {
       socket.off("message");
     };
-  }, [chat]);
+  }, [chat._id]);
 
   return {
     messages,
