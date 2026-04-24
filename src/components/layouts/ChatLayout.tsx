@@ -4,6 +4,7 @@ import ChatListPanel from "../layouts/ChatListPanel";
 import ChatBox from "../layouts/ChatBox";
 import { UserRoundPlus } from "lucide-react";
 import UserProfile from "../users/UserProfile";
+import CallManager from "../../call/CallManager";
 
 const ChatLayout = () => {
   const [selectedChat, setSelectedChat] = useState<any>(null);
@@ -33,7 +34,7 @@ const ChatLayout = () => {
   };
 
   return (
-    <div className="h-screen w-full flex bg-linear-to-br from-indigo-50 via-white to-purple-50 relative">
+    <main className="h-screen w-full flex bg-linear-to-br from-indigo-50 via-white to-purple-50 relative">
       <div
         className={`hidden md:flex w-[22%] h-full flex-col shrink-0  border-r border-gray-100`}
       >
@@ -128,7 +129,8 @@ const ChatLayout = () => {
           </div>
         </div>
       )}
-    </div>
+      <CallManager />
+    </main>
   );
 };
 
