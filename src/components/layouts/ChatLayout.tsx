@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import LeftSidebar from "../layouts/LeftSidebar";
 import ChatListPanel from "../layouts/ChatListPanel";
 import ChatBox from "../layouts/ChatBox";
 import { UserRoundPlus } from "lucide-react";
 import UserProfile from "../users/UserProfile";
+import CallManager from "../../call/CallManager";
+import api from "../../api/axios";
+import { setMissedCount } from "../../redux/reducer/CallReducer";
 
 const ChatLayout = () => {
   const [selectedChat, setSelectedChat] = useState<any>(null);
@@ -11,6 +15,31 @@ const ChatLayout = () => {
   const [showSideBar, setShowSideBar] = useState<Boolean>(false);
   const [selectedUserId, setSelectedUserId] = useState("");
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+
+  const dispatch = useDispatch();
+  const myId = localStorage.getItem("userID");
+
+  const fetchUnreadMissedCount = async () => {
+    try {
+      const res = await api.get("/api/calls/history");
+      const data = res.data;
+      if (data.success) {
+        const unreadCount = data.calls.filter(
+          (call: any) =>
+            call.callStatus === "missed" &&
+            call.receiverId?._id === myId &&
+            call.read === false,
+        ).length;
+        dispatch(setMissedCount(unreadCount));
+      }
+    } catch (err) {
+      console.log("Error fetching missed count:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchUnreadMissedCount();
+  }, [dispatch, myId]);
 
   const openProfile = (id: string) => {
     setSelectedUserId(id);
@@ -33,7 +62,7 @@ const ChatLayout = () => {
   };
 
   return (
-    <div className="h-screen w-full flex bg-linear-to-br from-indigo-50 via-white to-purple-50 relative">
+    <main className="h-screen w-full flex bg-linear-to-br from-indigo-50 via-white to-purple-50 relative">
       <div
         className={`hidden md:flex w-[22%] h-full flex-col shrink-0  border-r border-gray-100`}
       >
@@ -128,7 +157,8 @@ const ChatLayout = () => {
           </div>
         </div>
       )}
-    </div>
+      <CallManager />
+    </main>
   );
 };
 

@@ -1,10 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
-import Home from "./pages/Home";
-import Signup from "./pages/Signup";
-import Login from "./pages/Login";
-import ChatLayout from "./components/layouts/ChatLayout";
-import ProtectedRoute from "./components/ProtectedRoute";
-import VerifyEmail from "./pages/VerifyEmail";
+import { lazy } from "react";
+const Home = lazy(() => import("./pages/Home"));
+const Signup = lazy(() => import("./pages/Signup"));
+const Login = lazy(() => import("./pages/Login"));
+const ChatLayout = lazy(() => import("./components/layouts/ChatLayout"));
+const ProtectedRoute = lazy(() => import("./components/ProtectedRoute"));
+const VerifyEmail = lazy(() => import("./pages/VerifyEmail"));
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },

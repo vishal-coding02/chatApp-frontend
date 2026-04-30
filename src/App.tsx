@@ -4,6 +4,7 @@ import AuthInitializer from "./components/AuthInitializer";
 import router from "./router";
 import { useSelector } from "react-redux";
 import SplashScreen from "./components/SplashScreen";
+import { Suspense } from "react";
 
 const AppRoutes = () => {
   const isAuthReady = useSelector((state: any) => state.auth.isAuthReady);
@@ -16,8 +17,10 @@ const App = () => {
 
   return (
     <AuthInitializer>
-      {showSplash && <SplashScreen onDone={() => setShowSplash(false)} />}
-      <AppRoutes />
+      <Suspense>
+        {showSplash && <SplashScreen onDone={() => setShowSplash(false)} />}
+        <AppRoutes />
+      </Suspense>
     </AuthInitializer>
   );
 };
