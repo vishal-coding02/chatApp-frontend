@@ -11,6 +11,7 @@ import {
   rejectCall,
   missedCall,
   noAnswer,
+  incrementUnreadMissed,
 } from "../redux/reducer/CallReducer";
 import { useWebRTC } from "../hooks/useWebRTC";
 import Outgoing from "./Outgoing";
@@ -120,6 +121,7 @@ const CallManager = () => {
 
       ringTimerRef.current = setTimeout(() => {
         socket.emit("call:reject", { to: from, reason: "no_answer" });
+        dispatch(incrementUnreadMissed());
         dispatch(missedCall());
       }, RING_TIMEOUT);
     });
@@ -247,7 +249,7 @@ const CallManager = () => {
             }
             socket.emit("call:reject", {
               to: pendingCaller.id,
-              reason: "busy",
+              reason: "reject",
             });
             setPendingCaller(null);
           }}

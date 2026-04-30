@@ -3,8 +3,8 @@ import { PhoneOff } from "lucide-react";
 
 interface Props {
   callerName: string;
-  onDismiss: () => void;      
-  onTimeout: () => void;      
+  onDismiss: () => void;
+  onTimeout: () => void;
 }
 const IncomingWhileOngoing = ({ callerName, onDismiss, onTimeout }: Props) => {
   const [timeLeft, setTimeLeft] = useState(30);

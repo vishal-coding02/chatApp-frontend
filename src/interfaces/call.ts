@@ -5,13 +5,14 @@ export interface CallerInfo {
   profilePic?: string;
 }
 
-export interface CallLog {
+export interface CallRecord {
   _id: string;
   callerId: CallerInfo;
-  callStatus: string;
+  receiverId: CallerInfo;
+  callStatus: "missed" | "received" | "rejected" | "busy";
   createdAt: string;
+  read  : boolean
 }
-
 export interface CallLogProps {
   isOpen: boolean;
   onClose: () => void;

@@ -30,7 +30,6 @@ export interface Chat {
   time: string;
 }
 
-
 type CallStatus = "idle" | "calling" | "ringing" | "ongoing" | "ended";
 
 export interface UserInfo {

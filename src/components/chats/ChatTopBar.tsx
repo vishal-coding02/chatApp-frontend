@@ -1,18 +1,23 @@
-// ChatTopBar.tsx
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { PhoneCall, User, Image, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { UserData } from "../../interfaces";
 import { fetchUserProfile } from "../../api/user.api";
 import CallLog from "../CallLog";
+import { socket } from "../../socket";
+import { incrementUnreadMissed } from "../../redux/reducer/CallReducer";
 
 const ChatTopBar = ({ onOpenProfile }: any) => {
+  const dispatch = useDispatch();
   const userData = useSelector((state: any) => state.auth.userData);
   const [user, setUser] = useState<UserData>({});
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isImagePreviewOpen, setIsImagePreviewOpen] = useState(false);
   const [isCallLogOpen, setIsCallLogOpen] = useState(false);
+  const unreadMissedCount = useSelector(
+    (state: any) => state.call?.unreadMissedCount,
+  );
 
   const userId = localStorage.getItem("userID");
 
@@ -31,6 +36,15 @@ const ChatTopBar = ({ onOpenProfile }: any) => {
     if (userId) {
       handleFetchUserProfile();
     }
+  }, []);
+
+  useEffect(() => {
+    socket.on("missed-call", () => {
+      dispatch(incrementUnreadMissed());
+    });
+    return () => {
+      socket.off("missed-call");
+    };
   }, []);
 
   return (
@@ -58,13 +72,17 @@ const ChatTopBar = ({ onOpenProfile }: any) => {
           </div>
 
           <div className="hidden md:flex items-center gap-3">
-            {/* Call Log Icon - PhoneCall */}
             <div className="relative">
               <button
                 onClick={() => setIsCallLogOpen(!isCallLogOpen)}
-                className="w-10 h-10 rounded-full bg-linear-to-r from-gray-50 to-gray-100 border border-gray-300 flex items-center justify-center hover:from-gray-100 hover:to-gray-200 transition-all duration-300 cursor-pointer"
+                className="relative w-10 h-10 rounded-full bg-linear-to-r from-gray-50 to-gray-100 border border-gray-300 flex items-center justify-center hover:from-gray-100 hover:to-gray-200 transition-all duration-300 cursor-pointer"
               >
                 <PhoneCall className="h-5 w-5 text-gray-600 cursor-pointer" />
+                {unreadMissedCount > 0 && (
+                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+                    {unreadMissedCount}
+                  </span>
+                )}
               </button>
             </div>
 
@@ -139,12 +157,19 @@ const ChatTopBar = ({ onOpenProfile }: any) => {
             <div className="flex flex-col space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-gray-700 font-medium">Call Log</span>
-                <button
-                  onClick={() => setIsCallLogOpen(!isCallLogOpen)}
-                  className="w-10 h-10 rounded-full bg-linear-to-r from-gray-50 to-gray-100 border border-gray-300 flex items-center justify-center cursor-pointer"
-                >
-                  <PhoneCall className="h-5 w-5 text-gray-600 cursor-pointer" />
-                </button>
+                <div className="relative">
+                  <button
+                    onClick={() => setIsCallLogOpen(!isCallLogOpen)}
+                    className="w-10 h-10 rounded-full bg-linear-to-r from-gray-50 to-gray-100 border border-gray-300 flex items-center justify-center cursor-pointer"
+                  >
+                    <PhoneCall className="h-5 w-5 text-gray-600 cursor-pointer" />
+                  </button>
+                  {unreadMissedCount > 0 && (
+                    <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+                      {unreadMissedCount}
+                    </span>
+                  )}
+                </div>
               </div>
 
               <div className="flex items-center justify-between">

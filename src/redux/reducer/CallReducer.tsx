@@ -30,6 +30,7 @@ export interface CallState {
   isMuted: boolean;
   callTime: number;
   endedDuration: number;
+  unreadMissedCount: number;
 }
 
 const initialState: CallState = {
@@ -41,6 +42,7 @@ const initialState: CallState = {
   callTime: 0,
   endedDuration: 0,
   isAccepted: false,
+  unreadMissedCount: 0,
 };
 
 const callSlice = createSlice({
@@ -92,7 +94,6 @@ const callSlice = createSlice({
     endCall: (state) => {
       state.endedDuration = state.callTime;
       state.callStatus = "ended";
-
       if (state.isAccepted) {
         state.callEndType = "ended";
       } else {
@@ -112,12 +113,27 @@ const callSlice = createSlice({
       state.endedDuration = 0;
     },
 
+    incrementUnreadMissed: (state) => {
+      state.unreadMissedCount += 1;
+    },
+
+    clearUnreadMissed: (state) => {
+      state.unreadMissedCount = 0;
+    },
+
+    setMissedCount: (state, action: PayloadAction<number>) => {
+      state.unreadMissedCount = action.payload;
+    },
+
     setBusy: (state) => {
       state.callStatus = "ended";
       state.callEndType = "busy";
     },
 
-    resetCall: () => initialState,
+    resetCall: (state) => ({
+      ...initialState,
+      unreadMissedCount: state.unreadMissedCount,
+    }),
 
     toggleMute: (state) => {
       state.isMuted = !state.isMuted;
@@ -141,6 +157,9 @@ export const {
   setBusy,
   missedCall,
   noAnswer,
+  clearUnreadMissed,
+  setMissedCount,
+  incrementUnreadMissed,
 } = callSlice.actions;
 
 export default callSlice.reducer;
