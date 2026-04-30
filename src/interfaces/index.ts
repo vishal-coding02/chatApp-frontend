@@ -29,3 +29,20 @@ export interface Chat {
   unread: number;
   time: string;
 }
+
+type CallStatus = "idle" | "calling" | "ringing" | "ongoing" | "ended";
+
+export interface UserInfo {
+  id: string;
+  name: string;
+  avatar?: string;
+}
+
+export interface CallState {
+  callStatus: CallStatus;
+  caller: UserInfo | null;
+  receiver: UserInfo | null;
+  callType: "audio" | null;
+  isMuted: boolean;
+  callTime: number;
+}
