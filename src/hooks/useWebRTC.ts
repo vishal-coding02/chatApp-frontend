@@ -1,6 +1,7 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { socket } from "../socket";
 import api from "../api/axios";
+import { useEffect } from "react";
 
 export const useWebRTC = () => {
   const peerRef = useRef<RTCPeerConnection | null>(null);
@@ -39,14 +40,17 @@ export const useWebRTC = () => {
 
   // Mic access
   const getLocalStream = async () => {
-    if (localStreamRef.current) return localStreamRef.current;
-
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     localStreamRef.current = stream;
+
+    stream.getAudioTracks().forEach((track) => {
+      track.enabled = true;
+    });
+
     return stream;
   };
 
-  // Create peer
+  // Peer connection
   const createPeer = async (targetId: string) => {
     await ensureIceServers();
 
@@ -54,7 +58,7 @@ export const useWebRTC = () => {
       iceServers: iceServersRef.current,
     });
 
-    // ICE send
+    // ICE candidate milte hi dusre ko bhejo
     peer.onicecandidate = (event) => {
       if (event.candidate) {
         socket.emit("webrtc:ice", {
@@ -73,16 +77,11 @@ export const useWebRTC = () => {
       remoteAudioRef.current.srcObject = event.streams[0];
     };
 
-    // Debug
-    peer.oniceconnectionstatechange = () => {
-      console.log("ICE State:", peer.iceConnectionState);
-    };
-
     peerRef.current = peer;
     return peer;
   };
 
-  // CALLER
+  // CALLER: offer
   const createOffer = async (targetId: string) => {
     const stream = await getLocalStream();
     const peer = await createPeer(targetId);
@@ -95,7 +94,7 @@ export const useWebRTC = () => {
     socket.emit("webrtc:offer", { to: targetId, offer });
   };
 
-  // RECEIVER
+  // RECEIVER: offer
   const createAnswer = async (
     targetId: string,
     offer: RTCSessionDescriptionInit,
@@ -106,45 +105,38 @@ export const useWebRTC = () => {
     stream.getTracks().forEach((track) => peer.addTrack(track, stream));
 
     await peer.setRemoteDescription(new RTCSessionDescription(offer));
-
     const answer = await peer.createAnswer();
     await peer.setLocalDescription(answer);
 
     socket.emit("webrtc:answer", { to: targetId, answer });
   };
 
-  // Handle answer
+  // CALLER: answer
   const handleAnswer = async (answer: RTCSessionDescriptionInit) => {
     await peerRef.current?.setRemoteDescription(
       new RTCSessionDescription(answer),
     );
   };
 
-  // ICE receive
+  // ICE candidate
   const handleIceCandidate = async (candidate: RTCIceCandidateInit) => {
-    try {
-      await peerRef.current?.addIceCandidate(new RTCIceCandidate(candidate));
-    } catch (err) {
-      console.log("ICE error:", err);
-    }
+    await peerRef.current?.addIceCandidate(new RTCIceCandidate(candidate));
   };
 
-  // Mute
+  // Mute/Unmute
   const setMuted = (muted: boolean) => {
     localStreamRef.current?.getAudioTracks().forEach((track) => {
       track.enabled = !muted;
     });
   };
 
-  // Cleanup
+  // Call end cleanup
   const cleanup = () => {
     localStreamRef.current?.getTracks().forEach((t) => t.stop());
     peerRef.current?.close();
-
     if (remoteAudioRef.current) {
       remoteAudioRef.current.srcObject = null;
     }
-
     localStreamRef.current = null;
     peerRef.current = null;
   };
