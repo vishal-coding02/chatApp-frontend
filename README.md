@@ -19,6 +19,50 @@ A full-stack real-time chat application with secure messaging, encryption, and a
 - Optimized re-renders using useCallback and useMemo
 - Responsive UI
 
+##  Audio Calling (WebRTC)
+
+The app now supports real-time audio calling using WebRTC.
+
+### Features
+
+- Peer-to-peer audio calling
+- Incoming call UI
+- Ongoing call screen
+- Call end screen
+- Mute / Unmute
+- Call timer
+- Missed call tracking
+- Multiple incoming call handling (while busy)
+
+---
+
+## TURN + ICE Servers
+
+To ensure calls work on all networks:
+
+- ICE servers fetched from backend
+- Includes:
+  - STUN (Google)
+  - TURN (Twilio)
+
+### Flow
+
+1. Fetch ICE servers
+2. Create peer connection
+3. WebRTC chooses best route
+
+---
+
+## WebRTC Logic
+
+Custom hook handles:
+
+- Peer connection
+- Offer / Answer
+- ICE exchange
+- Media handling
+- Cleanup
+
 ## Tech Stack
 
 - **Framework:** React + TypeScript
@@ -45,6 +89,7 @@ A full-stack real-time chat application with secure messaging, encryption, and a
 - npm
 
 ### Installation
+
 ```bash
 # Clone the repository
 git clone https://github.com/vishal-coding02/chatApp-frontend.git
@@ -63,21 +108,22 @@ npm run dev
 
 Create a `.env` file in the root folder and add:
 
-VITE_API_URL=http://localhost:5000  # For production, use your deployed backend URL
+VITE_API_URL=http://localhost:5000 # For production, use your deployed backend URL
 VITE_CRYPTO_SECRET=your_secret_key
 
 ## Project Structure
 
 chatApp-frontend/
 ├── src/
-│   ├── api/           # API call functions
-│   ├── components/    # Reusable UI components
-│   ├── hooks/         # Custom React hooks (useChat, useMessage, etc.)
-│   ├── interfaces/    # TypeScript interfaces
-│   ├── pages/         # App pages (Login, Chat, etc.)
-│   ├── store/         # Redux store and slices
-│   ├── utils/         # Helper functions (encryption, debounce, etc.)
-│   └── App.tsx        # Main app file
+│ ├── api/ # API call functions
+│ ├── call/ calls ui 
+│ ├── components/ # Reusable UI components
+│ ├── hooks/ # Custom React hooks (useChat, useMessage, etc.)
+│ ├── interfaces/ # TypeScript interfaces
+│ ├── pages/ # App pages (Login, Chat, etc.)
+│ ├── store/ # Redux store and slices
+│ ├── utils/ # Helper functions (encryption, debounce, etc.)
+│ └── App.tsx # Main app file
 ├── public/
 ├── index.html
 └── vite.config.ts
@@ -86,4 +132,3 @@ chatApp-frontend/
 
 > This is only the frontend. Backend repo is here:
 > [chatApp-backend](https://github.com/vishal-coding02/chatApp-backend)
-
