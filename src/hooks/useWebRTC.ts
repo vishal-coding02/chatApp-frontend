@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useRef, useEffect } from "react";
 import { socket } from "../socket";
 import api from "../api/axios";
 
@@ -6,30 +6,36 @@ export const useWebRTC = () => {
   const peerRef = useRef<RTCPeerConnection | null>(null);
   const localStreamRef = useRef<MediaStream | null>(null);
   const remoteAudioRef = useRef<HTMLAudioElement | null>(null);
+  const iceLoadedRef = useRef(false);
+  const iceCandidateQueue = useRef<RTCIceCandidateInit[]>([]); // ← ADD
 
   const iceServersRef = useRef<RTCIceServer[]>([
     { urls: "stun:stun.l.google.com:19302" },
     { urls: "stun:stun1.l.google.com:19302" },
   ]);
 
-  const iceLoadedRef = useRef(false);
+  const getLocalStream = async () => {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    localStreamRef.current = stream;
+    stream.getAudioTracks().forEach((track) => {
+      track.enabled = true;
+    });
+    return stream;
+  };
 
   const ensureIceServers = async () => {
-    if (iceLoadedRef.current) return;
-
+    if (iceLoadedRef.current) return iceServersRef.current;
     try {
       const res = await api.get("/api/calls/ice-servers");
-
-      iceServersRef.current = [
+      const servers = [
         { urls: "stun:stun.l.google.com:19302" },
-        { urls: "stun:stun1.l.google.com:19302" },
         ...(res.data?.iceServers || []),
       ];
-
+      iceServersRef.current = servers;
       iceLoadedRef.current = true;
-      console.log("ICE servers loaded:");
-    } catch (err) {
-      console.log("TURN fetch failed, using STUN only");
+      return servers;
+    } catch {
+      return iceServersRef.current;
     }
   };
 
@@ -37,34 +43,20 @@ export const useWebRTC = () => {
     ensureIceServers();
   }, []);
 
-  // Mic access
-  const getLocalStream = async () => {
-    if (localStreamRef.current) return localStreamRef.current;
-
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    localStreamRef.current = stream;
-    return stream;
-  };
-
-  // Create peer
   const createPeer = async (targetId: string) => {
-    await ensureIceServers();
-
+    const currentServers = await ensureIceServers();
     const peer = new RTCPeerConnection({
-      iceServers: iceServersRef.current,
+      iceServers: currentServers,
+      iceTransportPolicy: "all",
     });
 
-    // ICE send
     peer.onicecandidate = (event) => {
       if (event.candidate) {
-        socket.emit("webrtc:ice", {
-          to: targetId,
-          candidate: event.candidate,
-        });
+        console.log("ICE candidate type:", event.candidate.type);
+        socket.emit("webrtc:ice", { to: targetId, candidate: event.candidate });
       }
     };
 
-    // Remote audio
     peer.ontrack = (event) => {
       if (!remoteAudioRef.current) {
         remoteAudioRef.current = new Audio();
@@ -73,80 +65,74 @@ export const useWebRTC = () => {
       remoteAudioRef.current.srcObject = event.streams[0];
     };
 
-    // Debug
-    peer.oniceconnectionstatechange = () => {
-      console.log("ICE State:", peer.iceConnectionState);
-    };
-
     peerRef.current = peer;
     return peer;
   };
 
-  // CALLER
   const createOffer = async (targetId: string) => {
     const stream = await getLocalStream();
     const peer = await createPeer(targetId);
 
     stream.getTracks().forEach((track) => peer.addTrack(track, stream));
-
     const offer = await peer.createOffer();
-    await peer.setLocalDescription(offer);
 
+    await peer.setLocalDescription(offer);
     socket.emit("webrtc:offer", { to: targetId, offer });
   };
 
-  // RECEIVER
   const createAnswer = async (
     targetId: string,
     offer: RTCSessionDescriptionInit,
   ) => {
     const stream = await getLocalStream();
     const peer = await createPeer(targetId);
-
     stream.getTracks().forEach((track) => peer.addTrack(track, stream));
-
     await peer.setRemoteDescription(new RTCSessionDescription(offer));
+
+    for (const candidate of iceCandidateQueue.current) {
+      await peer.addIceCandidate(new RTCIceCandidate(candidate));
+    }
+    iceCandidateQueue.current = [];
 
     const answer = await peer.createAnswer();
     await peer.setLocalDescription(answer);
-
     socket.emit("webrtc:answer", { to: targetId, answer });
   };
 
-  // Handle answer
   const handleAnswer = async (answer: RTCSessionDescriptionInit) => {
     await peerRef.current?.setRemoteDescription(
       new RTCSessionDescription(answer),
     );
-  };
 
-  // ICE receive
-  const handleIceCandidate = async (candidate: RTCIceCandidateInit) => {
-    try {
+    for (const candidate of iceCandidateQueue.current) {
       await peerRef.current?.addIceCandidate(new RTCIceCandidate(candidate));
-    } catch (err) {
-      console.log("ICE error:", err);
     }
+    iceCandidateQueue.current = [];
   };
 
-  // Mute
+  const handleIceCandidate = async (candidate: RTCIceCandidateInit) => {
+    if (!peerRef.current?.remoteDescription) {
+      iceCandidateQueue.current.push(candidate);
+      return;
+    }
+    await peerRef.current.addIceCandidate(new RTCIceCandidate(candidate));
+  };
+
   const setMuted = (muted: boolean) => {
     localStreamRef.current?.getAudioTracks().forEach((track) => {
       track.enabled = !muted;
     });
   };
 
-  // Cleanup
   const cleanup = () => {
     localStreamRef.current?.getTracks().forEach((t) => t.stop());
     peerRef.current?.close();
-
     if (remoteAudioRef.current) {
       remoteAudioRef.current.srcObject = null;
     }
-
     localStreamRef.current = null;
     peerRef.current = null;
+    iceCandidateQueue.current = [];
   };
 
   return {
