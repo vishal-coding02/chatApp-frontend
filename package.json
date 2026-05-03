@@ -1,7 +1,11 @@
 {
   "name": "package.json",
   "private": true,
+<<<<<<< HEAD
   "version": "1.4.1",
+=======
+  "version": "1.5.0",
+>>>>>>> eafc27a9ea0cd210057b7c7ffee872be8c821a90
   "type": "module",
   "scripts": {
     "dev": "vite",
