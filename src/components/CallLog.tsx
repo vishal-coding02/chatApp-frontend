@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import { Phone, PhoneCall, X, Trash2 } from "lucide-react";
+import { Phone, PhoneCall, PhoneMissed, X, Trash2 } from "lucide-react";
 import api from "../api/axios";
 import type { CallRecord, CallLogProps } from "../interfaces/call";
-import { clearUnreadMissed } from "../redux/reducer/CallReducer";
+import { clearUnreadMissed, startCall } from "../redux/reducer/CallReducer";
 import { useDispatch, useSelector } from "react-redux";
 const myId = localStorage.getItem("userID");
+import { socket } from "../socket";
 
 const CallLog = ({ isOpen, onClose }: CallLogProps) => {
   const dispatch = useDispatch();
@@ -42,8 +43,24 @@ const CallLog = ({ isOpen, onClose }: CallLogProps) => {
     fetchCalls();
   }, [isOpen]);
 
-  const removeCall = (id: string) => {
-    setCalls(calls.filter((c) => c._id !== id));
+  const removeCall = async (id: string) => {
+    try {
+      await api.patch(`/api/calls/${id}`);
+
+      setCalls((prev) => prev.filter((c) => c._id !== id));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const clearAllCalls = async () => {
+    try {
+      await api.patch("/api/calls/all");
+
+      setCalls([]);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const formatTime = (dateStr: string) => {
@@ -214,10 +231,12 @@ const CallLog = ({ isOpen, onClose }: CallLogProps) => {
                           </p>
                           {isMissed ? (
                             <span className="text-xs text-red-500 bg-red-50 px-2 py-0.5 rounded-full shrink-0">
+                              <PhoneMissed className="h-3 w-3 inline mr-1" />
                               Missed
                             </span>
                           ) : (
                             <span className="text-xs text-green-600 bg-green-50 px-2 py-0.5 rounded-full shrink-0">
+                              <Phone className="h-3 w-3 inline mr-1" />
                               Received
                             </span>
                           )}
@@ -233,7 +252,30 @@ const CallLog = ({ isOpen, onClose }: CallLogProps) => {
                       <div className="flex items-center gap-2">
                         {isMissed && (
                           <button
-                            className="p-2 rounded-full bg-green-50 text-green-600 hover:bg-green-100 transition-colors"
+                            onClick={() => {
+                              (dispatch(
+                                startCall({
+                                  caller: {
+                                    id: call.receiverId?._id,
+                                    name: call.receiverId?.userFullName,
+                                  },
+                                  receiver: {
+                                    id: call.callerId?._id,
+                                    name: call.callerId?.userFullName,
+                                  },
+                                  type: "audio",
+                                }),
+                              ),
+                                socket.emit("call:initiate", {
+                                  to: call.callerId?._id,
+                                  from: call.receiverId?._id,
+                                  callerName:
+                                    call.receiverId?.userFullName || "Unknown",
+                                  callType: "audio",
+                                  chatId: call.chatId,
+                                }));
+                            }}
+                            className="p-2 cursor-pointer rounded-full bg-green-50 text-green-600 hover:bg-green-100 transition-colors"
                             title="Call back"
                           >
                             <Phone className="h-4 w-4" />
@@ -241,7 +283,7 @@ const CallLog = ({ isOpen, onClose }: CallLogProps) => {
                         )}
                         <button
                           onClick={() => removeCall(call._id)}
-                          className="p-2 rounded-full bg-gray-100 text-gray-500 hover:bg-red-50 hover:text-red-600 transition-colors"
+                          className="p-2 cursor-pointer rounded-full bg-gray-100 text-gray-500 hover:bg-red-50 hover:text-red-600 transition-colors"
                           title="Remove"
                         >
                           <Trash2 className="h-4 w-4" />
@@ -259,8 +301,8 @@ const CallLog = ({ isOpen, onClose }: CallLogProps) => {
         {totalCalls > 0 && (
           <div className="p-4 border-t border-gray-200 bg-gray-50">
             <button
-              onClick={() => setCalls([])}
-              className="w-full py-2.5 bg-linear-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
+              onClick={clearAllCalls}
+              className="w-full cursor-pointer py-2.5 bg-linear-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
             >
               <Trash2 className="h-4 w-4" />
               Clear All
