@@ -7,7 +7,7 @@ export const useWebRTC = () => {
   const localStreamRef = useRef<MediaStream | null>(null);
   const remoteAudioRef = useRef<HTMLAudioElement | null>(null);
   const iceLoadedRef = useRef(false);
-  const iceCandidateQueue = useRef<RTCIceCandidateInit[]>([]); // ← ADD
+  const iceCandidateQueue = useRef<RTCIceCandidateInit[]>([]);
 
   const iceServersRef = useRef<RTCIceServer[]>([
     { urls: "stun:stun.l.google.com:19302" },
