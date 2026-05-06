@@ -19,7 +19,7 @@ A full-stack real-time chat application with secure messaging, encryption, and a
 - Optimized re-renders using useCallback and useMemo
 - Responsive UI
 
-##  Audio Calling (WebRTC)
+## Audio Calling (WebRTC)
 
 The app now supports real-time audio calling using WebRTC.
 
@@ -62,6 +62,13 @@ Custom hook handles:
 - ICE exchange
 - Media handling
 - Cleanup
+
+### Updated Audio Calling Features
+
+- Call records shown inside chats
+- Callback support directly from call logs
+- Remove single call log
+- Clear all call logs
 
 ## Tech Stack
 
@@ -116,7 +123,7 @@ VITE_CRYPTO_SECRET=your_secret_key
 chatApp-frontend/
 ├── src/
 │ ├── api/ # API call functions
-│ ├── call/ calls ui 
+│ ├── call/ calls ui
 │ ├── components/ # Reusable UI components
 │ ├── hooks/ # Custom React hooks (useChat, useMessage, etc.)
 │ ├── interfaces/ # TypeScript interfaces

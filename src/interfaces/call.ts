@@ -11,7 +11,8 @@ export interface CallRecord {
   receiverId: CallerInfo;
   callStatus: "missed" | "received" | "rejected" | "busy";
   createdAt: string;
-  read  : boolean
+  read: boolean;
+  chatId?: string;
 }
 export interface CallLogProps {
   isOpen: boolean;

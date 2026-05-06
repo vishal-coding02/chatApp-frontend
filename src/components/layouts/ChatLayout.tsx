@@ -15,6 +15,7 @@ const ChatLayout = () => {
   const [showSideBar, setShowSideBar] = useState<Boolean>(false);
   const [selectedUserId, setSelectedUserId] = useState("");
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isCallLogOpen, setIsCallLogOpen] = useState(false);
 
   const dispatch = useDispatch();
   const myId = localStorage.getItem("userID");
@@ -93,6 +94,8 @@ const ChatLayout = () => {
         <ChatListPanel
           onSelectChat={handleSelectChat}
           onOpenProfile={openProfile}
+          isCallLogOpen={isCallLogOpen}
+          setIsCallLogOpen={setIsCallLogOpen}
         />
       </div>
 
@@ -110,9 +113,12 @@ const ChatLayout = () => {
 
       <div
         onClick={() => setShowSideBar(!showSideBar)}
-        className={`${selectedChat && "hidden"} fixed bottom-8 right-5 z-50 md:hidden 
-  bg-linear-to-r from-indigo-500 to-purple-600 
-  p-4 rounded-full shadow-lg cursor-pointer`}
+        className={`
+    ${selectedChat || isCallLogOpen ? "hidden" : "fixed"}
+    bottom-8 right-5 z-50 md:hidden
+    bg-linear-to-r from-indigo-500 to-purple-600
+    p-4 rounded-full shadow-lg cursor-pointer
+  `}
       >
         <UserRoundPlus className="text-white w-6 h-6" />
       </div>

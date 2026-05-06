@@ -5,9 +5,15 @@ import { useChat } from "../../hooks/useChat";
 interface ChatListPanelProps {
   onSelectChat: (chat: any) => void;
   onOpenProfile: any;
+  isCallLogOpen: boolean;
+  setIsCallLogOpen: any;
 }
-
-const ChatListPanel = ({ onSelectChat, onOpenProfile }: ChatListPanelProps) => {
+const ChatListPanel = ({
+  onSelectChat,
+  onOpenProfile,
+  isCallLogOpen,
+  setIsCallLogOpen,
+}: ChatListPanelProps) => {
   const {
     deleteChat,
     activeTab,
@@ -24,7 +30,11 @@ const ChatListPanel = ({ onSelectChat, onOpenProfile }: ChatListPanelProps) => {
 
   return (
     <div className=" h-full flex flex-col bg-linear-to-b from-white to-indigo-50/30">
-      <ChatTopBar onOpenProfile={onOpenProfile} />
+      <ChatTopBar
+        onOpenProfile={onOpenProfile}
+        isCallLogOpen={isCallLogOpen}
+        setIsCallLogOpen={setIsCallLogOpen}
+      />
 
       {/* Tabs */}
       <div className="flex border-b border-gray-200 bg-white">

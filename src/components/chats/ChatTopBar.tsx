@@ -7,14 +7,17 @@ import CallLog from "../CallLog";
 import { socket } from "../../socket";
 import { incrementUnreadMissed } from "../../redux/reducer/CallReducer";
 
-const ChatTopBar = ({ onOpenProfile }: any) => {
+const ChatTopBar = ({
+  onOpenProfile,
+  isCallLogOpen,
+  setIsCallLogOpen,
+}: any) => {
   const dispatch = useDispatch();
   const userData = useSelector((state: any) => state.auth.userData);
   const [user, setUser] = useState<UserData>({});
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isImagePreviewOpen, setIsImagePreviewOpen] = useState(false);
-  const [isCallLogOpen, setIsCallLogOpen] = useState(false);
   const unreadMissedCount = useSelector(
     (state: any) => state.call?.unreadMissedCount,
   );

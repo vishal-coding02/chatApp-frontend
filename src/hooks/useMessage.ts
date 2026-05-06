@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef, useCallback, useMemo } from "react";
-import type { Message } from "../interfaces/index";
 import { socket } from "../socket";
 import { decryptMessage } from "../utils/encryption";
 import { getMessagesApi, deleteMessageApi } from "../api/message.api";
+import api from "../api/axios";
 
 interface UseMessageProps {
   chat: any;
@@ -10,7 +10,7 @@ interface UseMessageProps {
 }
 
 export const useMessage = ({ chat, typingUser }: UseMessageProps) => {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<any[]>([]);
   const [shouldAutoScroll, setShouldAutoScroll] = useState(true);
   const [activeMessageId, setActiveMessageId] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState(false);
@@ -79,17 +79,39 @@ export const useMessage = ({ chat, typingUser }: UseMessageProps) => {
     }
   }, [isAtBottom, hasMore, isFetchingMore, loadMoreMessages]);
 
+  const fetchCallRecords = async () => {
+    try {
+      const res = await api.get(`/api/calls/history/${chat?._id}`);
+      const data = res.data;
+      if (data.success) {
+        return data.calls;
+      }
+      return [];
+    } catch (err: any) {
+      console.log(err.response?.data?.error || err.message);
+      return [];
+    }
+  };
+
   const handleGetMessages = useCallback(async () => {
     try {
-      const res = await getMessagesApi(chat._id);
+      const [messagesRes, callRecords] = await Promise.all([
+        getMessagesApi(chat._id),
+        fetchCallRecords(),
+      ]);
 
-      const decryptedMessages = res.data.messages.map((msg: any) => ({
+      const decryptedMessages = messagesRes.data.messages.map((msg: any) => ({
         ...msg,
         text: decryptMessage(msg.text),
       }));
 
-      setMessages(decryptedMessages);
-      setHasMore(res.data.hasMore);
+      const allItems = [...decryptedMessages, ...callRecords].sort(
+        (a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+      );
+
+      setMessages(allItems);
+      setHasMore(messagesRes.data.hasMore);
 
       if (decryptedMessages.length > 0) {
         setLastCreatedAt(decryptedMessages[0].createdAt);
@@ -148,6 +170,33 @@ export const useMessage = ({ chat, typingUser }: UseMessageProps) => {
   const handleMessageClick = useCallback((messageId: string) => {
     setActiveMessageId((prevId) => (prevId === messageId ? null : messageId));
   }, []);
+
+  useEffect(() => {
+    if (!chat?._id) return;
+
+    const handleNewCallRecord = (newCall: any) => {
+      if (newCall.chatId === chat._id) {
+        setMessages((prev) => {
+          const exists = prev.some((item: any) => item._id === newCall._id);
+          if (exists) return prev;
+
+          const newMessages = [...prev, newCall].sort(
+            (a, b) =>
+              new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+          );
+          return newMessages;
+        });
+
+        setTimeout(() => scrollToBottom(), 100);
+      }
+    };
+
+    socket.on("call-record-saved", handleNewCallRecord);
+
+    return () => {
+      socket.off("call-record-saved", handleNewCallRecord);
+    };
+  }, [chat._id, scrollToBottom]);
 
   useEffect(() => {
     if (shouldAutoScroll) {
