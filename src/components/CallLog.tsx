@@ -1,10 +1,18 @@
 import { useState, useEffect } from "react";
-import { Phone, PhoneCall, PhoneMissed, X, Trash2 } from "lucide-react";
+import {
+  Phone,
+  PhoneOutgoing,
+  PhoneCall,
+  PhoneMissed,
+  PhoneIncoming,
+  X,
+  Trash2,
+} from "lucide-react";
 import api from "../api/axios";
 import type { CallRecord, CallLogProps } from "../interfaces/call";
 import { clearUnreadMissed, startCall } from "../redux/reducer/CallReducer";
 import { useDispatch, useSelector } from "react-redux";
-const myId = localStorage.getItem("userID");
+const myId = localStorage.getItem("userID") || "";
 import { socket } from "../socket";
 
 const CallLog = ({ isOpen, onClose }: CallLogProps) => {
@@ -78,11 +86,19 @@ const CallLog = ({ isOpen, onClose }: CallLogProps) => {
     return `${time} • ${date.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}`;
   };
 
-  const myCalls = calls.filter((c) => {
-    if (c.callStatus === "missed") return c.receiverId?._id === myId;
-    if (c.callStatus === "received") return true;
-    return false;
-  });
+  const myCalls = calls
+    .filter((c) => !c.deletedBy?.includes(myId))
+    .filter((c) => {
+      if (c.callStatus === "missed") {
+        return c.receiverId?._id === myId;
+      }
+
+      if (c.callStatus === "received") {
+        return true;
+      }
+
+      return false;
+    });
 
   const missedCalls = myCalls.filter(
     (c) => c.callStatus === "missed" && c.receiverId?._id === myId,
@@ -202,6 +218,19 @@ const CallLog = ({ isOpen, onClose }: CallLogProps) => {
                 const isMissed =
                   call.callStatus === "missed" && call.receiverId?._id === myId;
 
+                let callTypeLabel = "";
+                let CallIcon = PhoneCall;
+
+                if (!isMissed && call.callStatus === "received") {
+                  if (isCaller) {
+                    callTypeLabel = "Outgoing";
+                    CallIcon = PhoneOutgoing;
+                  } else {
+                    callTypeLabel = "Incoming";
+                    CallIcon = PhoneIncoming;
+                  }
+                }
+
                 return (
                   <div
                     key={call._id}
@@ -236,8 +265,8 @@ const CallLog = ({ isOpen, onClose }: CallLogProps) => {
                             </span>
                           ) : (
                             <span className="text-xs text-green-600 bg-green-50 px-2 py-0.5 rounded-full shrink-0">
-                              <Phone className="h-3 w-3 inline mr-1" />
-                              Received
+                              <CallIcon className="h-3 w-3 inline mr-1" />
+                              {callTypeLabel || "Received"}
                             </span>
                           )}
                         </div>
