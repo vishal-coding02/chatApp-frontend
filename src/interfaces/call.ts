@@ -13,6 +13,7 @@ export interface CallRecord {
   createdAt: string;
   read: boolean;
   chatId?: string;
+  deletedBy: string[];
 }
 export interface CallLogProps {
   isOpen: boolean;
