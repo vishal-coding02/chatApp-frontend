@@ -5,6 +5,7 @@ import router from "./router";
 import { useSelector } from "react-redux";
 import SplashScreen from "./components/SplashScreen";
 import { Suspense } from "react";
+import { usePushNotification } from "./hooks/usePushNotification";
 
 const AppRoutes = () => {
   const isAuthReady = useSelector((state: any) => state.auth.isAuthReady);
@@ -14,7 +15,7 @@ const AppRoutes = () => {
 
 const App = () => {
   const [showSplash, setShowSplash] = useState(true);
-
+  usePushNotification();
   return (
     <AuthInitializer>
       <Suspense>
