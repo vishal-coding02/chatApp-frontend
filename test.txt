@@ -1,0 +1,20 @@
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyBzOboRsjRsAJWN7R0YOEOo8YelQvW2Xnk",
+  authDomain: "chat-app-notifications-3db88.firebaseapp.com",
+  projectId: "chat-app-notifications-3db88",
+  storageBucket: "chat-app-notifications-3db88.firebasestorage.app",
+  messagingSenderId: "1074750633300",
+  appId: "1:1074750633300:web:4f07f9e6c3443f9f1dc4c1"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+
+keypair = BLc5WPEX4TQI3R6dNdQ6WqGH9kCY7pnLNwtVx2VMQI46UHVEYkyYy4MLqW0VN_pDL_QPeyTvjgmxGGmbPOtXun4
