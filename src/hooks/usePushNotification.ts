@@ -7,13 +7,21 @@ import api from "../api/axios";
 export const usePushNotification = () => {
   const accessToken = useSelector((state: any) => state.auth.jwtToken);
 
+  const getDeviceInfo = () => {
+    const ua = navigator.userAgent;
+    if (/android/i.test(ua)) return "android";
+    if (/iphone|ipad/i.test(ua)) return "ios";
+    if (/windows/i.test(ua)) return "windows";
+    if (/mac/i.test(ua)) return "mac";
+    return "unknown";
+  };
+
   useEffect(() => {
     if (!accessToken) return;
 
     const initPush = async () => {
       try {
         if (!("serviceWorker" in navigator) || !("Notification" in window)) {
-          console.warn("Push notifications not supported in this browser");
           return;
         }
 
@@ -35,7 +43,7 @@ export const usePushNotification = () => {
 
         await api.post(
           "/api/notification/save-token",
-          { fcmToken: token },
+          { fcmToken: token, device: getDeviceInfo() },
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
